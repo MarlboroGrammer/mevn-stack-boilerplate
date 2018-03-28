@@ -5,6 +5,8 @@ const morgan = require('morgan')
 const db = require('./config/connection')
 const user = require('./user')
 const app = express()
+const config = require('./config/parameters')
+
 app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(cors())
@@ -24,5 +26,10 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500)
   res.render('error')
 })
-console.log('Server alive!', db)
-app.listen(process.env.PORT || 8081)
+db.connect(config.DB_URL, function (err, result) {
+  if (err) {
+    return console.log('Could not connect', err)
+  }
+  app.listen(config.PORT)
+  console.log('Server Alive & Connected')
+})

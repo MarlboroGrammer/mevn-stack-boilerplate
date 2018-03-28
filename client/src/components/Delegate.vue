@@ -31,7 +31,9 @@
                           <a class="top-link" href="">Help</a>
                         </li>
                         <li>
-                          <a class="top-link" href="/">Logout</a>
+                          <router-link to="/">
+                            <a class="top-link" href="/">Logout</a>
+                          </router-link>
                         </li>
                     </ul>
                 </div>

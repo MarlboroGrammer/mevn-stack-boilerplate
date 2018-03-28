@@ -4,6 +4,11 @@ var Credentials = require('./models/credentials')
 var bcrypt = require('bcrypt-nodejs')
 var jwt = require('jsonwebtoken')
 
+function jwtSignUser (username) {
+  const ONE_WEEK = 60 * 60 * 24 * 7
+  return jwt.sign(username, 'secret', null)
+}
+
 router.post('/register', function (req, res) {
   var credentialsObj = new Credentials({
     username: req.body.username,
@@ -18,19 +23,32 @@ router.post('/register', function (req, res) {
 })
 
 router.post('/authenticate', function (req, res) {
-  console.log(req.body)
+  console.log('Debug started')
   Credentials.findOne({ username: req.body.username }, function (err, data) {
     if (err) {
       res.send(err)
+      console.log('err if case', err)
     }
-    if (!data){
-      res.send('NOTFOUND')
+    else if (!data) {
+      console.log('data if case')
+      return res.status(403).send({
+        error: 'The login informatuon was incorrect'
+      })
     } else {
-      console.log('Password hash: ', data)
+      console.log('gonna compare password')
       if (bcrypt.compareSync(req.body.password, data.password)) {
-        var token = jwt.sign({ username: req.body.username }, 'secret', { expiresIn: 50000 })
-        console.log(token)
-        res.send(data)
+        console.log('Our username is: ', req.body.username)
+        var token = jwtSignUser(req.body.username)
+        console.log('Fuck!', token)
+        res.send({
+          signedUser: data,
+          userToken: token
+        })
+      } else {
+        console.log('password is incorrect')
+        return res.status(403).send({
+          error: 'The login informatuon was incorrect'
+        })
       }
     }
   })

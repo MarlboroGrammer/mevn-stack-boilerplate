@@ -41,21 +41,32 @@ export default {
   data () {
     return {
       username: '',
-      password: ''
+      password: '',
+      loginError: false
     }
   },
   methods: {
     async login (event) {
-      event.preventDefault()
-      const response = await AuthenticationService.login({
-        username: this.username,
-        password: this.password
-      })
-      console.log(response)
+      try {
+        event.preventDefault()
+        const response = await AuthenticationService.login({
+          username: this.username,
+          password: this.password
+        })
+        this.$store.dispatch('setToken', response.data.userToken)
+        this.$store.dispatch('setUser', response.data.signedUser)
+        this.$router.push({name: 'Delegate'})
+        console.log(response.data)
+      } catch (error) {
+        console.log(error)
+        this.loginError = true
+      }
     }
   },
-  created () {
-    console.log(this.$refs.errmsg)
+  beforeCreate: function () {
+    if (this.$store.userLogged === true) {
+      this.$router.push({name: 'Delegate'})
+    }
   }
 }
 </script>
