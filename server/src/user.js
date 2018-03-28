@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt-nodejs')
 var jwt = require('jsonwebtoken')
 
 function jwtSignUser (username) {
-  const ONE_WEEK = 60 * 60 * 24 * 7
+  // const ONE_WEEK = 60 * 60 * 24 * 7
   return jwt.sign(username, 'secret', null)
 }
 
@@ -28,8 +28,7 @@ router.post('/authenticate', function (req, res) {
     if (err) {
       res.send(err)
       console.log('err if case', err)
-    }
-    else if (!data) {
+    } else if (!data) {
       console.log('data if case')
       return res.status(403).send({
         error: 'The login informatuon was incorrect'
