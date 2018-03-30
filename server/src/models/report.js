@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 var mongoose = require('mongoose')
 var client = require('./client.js')
 var delegate = require('./delegate')
@@ -11,8 +12,8 @@ var reportSchema = new mongoose.Schema({
     questions: [String],
     answers: [String]
   },
-  delegate: delegate.schema,
-  client: client.schema
+  delegate: {type: mongoose.Schema.ObjectId, ref: 'report'},
+  client: {type: mongoose.Schema.ObjectId, ref: 'client'}
 }, { collection: 'report' })
 
 module.exports = mongoose.model('report', reportSchema)

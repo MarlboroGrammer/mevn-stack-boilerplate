@@ -1,7 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VuexPersist from 'vuex-persist'
+// import Cookies from 'js-cookie'
 
 Vue.use(Vuex)
+
+const vuexLocalStorage = new VuexPersist({
+  key: 'vuex',
+  storage: window.localStorage
+})
 
 export default new Vuex.Store({
   strict: true,
@@ -23,6 +30,11 @@ export default new Vuex.Store({
       state.user = user
     }
   },
+  getters: {
+    isLoggedIn (state) {
+      return state.userLogged
+    }
+  },
   actions: {
     setToken ({commit}, token) {
       commit('setToken', token)
@@ -30,5 +42,6 @@ export default new Vuex.Store({
     setUser ({commit}, user) {
       commit('setUser', user)
     }
-  }
+  },
+  plugins: [vuexLocalStorage.plugin]
 })

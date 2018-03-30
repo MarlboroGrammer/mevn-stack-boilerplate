@@ -6,6 +6,7 @@ import App from './App'
 import router from './router'
 import sync from 'vuex-router-sync'
 import store from '@/store/store'
+import DateFilter from '@/filters/datefilter'
 
 Vue.config.productionTip = false
 
@@ -14,6 +15,7 @@ new Vue({
   el: '#app',
   router,
   store,
+  DateFilter,
   components: { App },
   template: '<App/>'
 })
