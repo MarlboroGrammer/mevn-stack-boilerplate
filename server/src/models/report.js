@@ -12,7 +12,7 @@ var reportSchema = new mongoose.Schema({
     questions: [String],
     answers: [String]
   },
-  delegate: {type: mongoose.Schema.ObjectId, ref: 'report'},
+  delegate: {type: mongoose.Schema.ObjectId, ref: 'delegate'},
   client: {type: mongoose.Schema.ObjectId, ref: 'client'}
 }, { collection: 'report' })
 
