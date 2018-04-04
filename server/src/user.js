@@ -38,7 +38,7 @@ router.post('/authenticate', function (req, res) {
       if (bcrypt.compareSync(req.body.password, data.password)) {
         console.log('Our username is: ', req.body.username)
         var token = jwtSignUser(req.body.username)
-        console.log('Fuck!', token)
+        console.log('nop!', token)
         res.send({
           signedUser: data,
           userToken: token
