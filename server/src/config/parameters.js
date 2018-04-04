@@ -1,4 +1,4 @@
 module.exports = {
-  PORT: 8081,
+  PORT: 3000,
   DB_URL: 'mongodb://localhost/pharmakeys'
 }

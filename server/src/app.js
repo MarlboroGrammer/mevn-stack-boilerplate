@@ -4,6 +4,7 @@ const cors = require('cors')
 const morgan = require('morgan')
 const db = require('./config/connection')
 const user = require('./user')
+const visit = require('./APIvisit')
 const app = express()
 const config = require('./config/parameters')
 
@@ -11,6 +12,7 @@ app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(cors())
 app.use('/users', user)
+app.use('/visits', visit)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   var err = new Error('Not Found')
