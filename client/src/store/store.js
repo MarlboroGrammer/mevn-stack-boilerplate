@@ -7,7 +7,8 @@ Vue.use(Vuex)
 
 const vuexLocalStorage = new VuexPersist({
   key: 'vuex',
-  storage: window.localStorage
+  storage: window.localStorage,
+  strict: false
 })
 
 export default new Vuex.Store({

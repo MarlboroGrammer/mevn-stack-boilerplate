@@ -12,5 +12,8 @@ export default {
   },
   getReportById (reportId) {
     return Api().get(`/reports/${reportId}`)
+  },
+  finalize (reportId, decision) {
+    return Api().put(`/reports/${decision}/${reportId}`)
   }
 }

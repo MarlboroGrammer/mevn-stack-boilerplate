@@ -114,4 +114,24 @@ router.post('/add', function (req, res, next) {
   })
 })
 
+router.put('/approve/:reportid', function (req, res, next) {
+  Reports.findOneAndUpdate({'_id': req.params.reportid}, {'status': 'Accepted'}, {upsert:true}, function (err, doc){
+    if (err) {
+      res.send(err)
+    } else {
+      res.send('Approved')
+    }
+  })
+})
+
+router.put('/reject/:reportid', function (req, res, next) {
+  Reports.findOneAndUpdate({'_id': req.params.reportid}, {'status': 'Rejected'}, {upsert:true}, function (err, doc){
+    if (err) {
+      res.send(err)
+    } else {
+      res.send('Rejected')
+    }
+  })
+})
+
 module.exports = router
