@@ -4,6 +4,7 @@ var client = require('./client.js')
 var delegate = require('./delegate')
 var reportSchema = new mongoose.Schema({
   date: Date,
+  type: String,
   objectif: String,
   potential: String,
   pharmacy: String,

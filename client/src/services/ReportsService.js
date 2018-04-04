@@ -9,5 +9,8 @@ export default {
   },
   addReport (report) {
     return Api().post('/reports/add', report)
+  },
+  getReportById (reportId) {
+    return Api().get(`/reports/${reportId}`)
   }
 }

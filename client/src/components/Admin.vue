@@ -66,62 +66,10 @@
 
       <div class="tab-content">
         <div id="activity" class="tab-pane fade in active">
-          <register></register>
         </div>
         <div id="reports" class="tab-pane fade">
           <div class="row">
-            <div class="col-md-3">
-              <div class="custom-search-input">
-                <div class="input-group">
-                    <input type="text" class="search-query form-control" placeholder="Search" name="report-keywords" />
-                    <span class="input-group-btn">
-                        <button class="btn btn-danger" type="button">
-                            <span class=" glyphicon glyphicon-search"></span>
-                        </button>
-                    </span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-2">
-               <div class="form-group report-type-container">
-                  <label for="report-type">Type</label>
-                  <select name="report-type" class="form-control">
-                    <option value="Doctors">Doctors</option>
-                    <option value="Pharmacists">Pharmacists</option>
-                    <option value="Wholesalers">Wholesalers</option>
-                    <option value="Hospitals">Hospitals</option>
-                    <option value="Clinics">Clinics</option>
-                  </select>
-               </div>
-            </div>
-            <div class="col-md-2">
-              <label for="report-from">From</label>
-              <datepicker name="report-from"></datepicker>
-            </div>
-            <div class="col-md-2">
-              <label for="report-to">To</label>
-              <datepicker name="report-to"></datepicker>
-            </div>
-          </div>
-          <div class="row">
-            <table class="table table-sm">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Type</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Delegate</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="report in reports">
-                  <th scope="row">3</th>
-                  <td>{{ report.type }}</td>
-                  <td>{{ report.date | formatDate }}</td>
-                  <td>{{ report.delegate.surname}}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div :is="currentComponent"></div>
           </div>
         </div>
 
@@ -148,204 +96,6 @@
         </div>
         <div id="overview" class="tab-pane fade">
         <h2><strong>Account overview</strong></h2>
-        <div class="row">
-          <div class="col-md-3 user-info">
-            <img src="src/assets/images/faycel.png" width="200">
-            <br>
-            <label for="first-name">Full name</label>
-            <div class="form-group">
-              <input id="first-name" class="form-control" />
-            </div>
-            <label for="first-name">Full job title</label>
-            <div class="form-group">
-              <input id="first-name" class="form-control" />
-            </div>
-            <label for="first-name">Phone number</label>
-            <div class="form-group">
-              <input id="first-name" class="form-control" />
-            </div>
-            <label for="first-name">Email</label>
-            <div class="form-group">
-              <input id="first-name" class="form-control" />
-            </div>
-          </div>
-          <div class="col-md-9 comm-info">
-            <h2>
-              <span class="blue-heading">Statistics</span>
-            </h2>
-            <div class="stat-box">
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="panel">
-                    <div class="panel-body red-panel">
-                      <div class="row">
-                        <div class="col-md-4">
-                          <i class="fa fa-tag"></i>
-                        </div>
-                        <div class="col-md-8">
-                          Total sales
-                          <h4>4522 DT</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="panel">
-                    <div class="panel-body green-panel">
-                      <div class="row">
-                        <div class="col-md-4">
-                          <i class="fa fa-tag"></i>
-                        </div>
-                        <div class="col-md-8">
-                          Total Records
-                          <h4>4522 DT</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="panel">
-                    <div class="panel-body blue-panel">
-                      <div class="row">
-                        <div class="col-md-4">
-                          <i class="fa fa-tag"></i>
-                        </div>
-                        <div class="col-md-8">
-                          Total sales
-                          <h4>4522 DT</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="panel">
-                    <div class="panel-body navy-panel">
-                      <div class="row">
-                        <div class="col-md-4">
-                          <i class="fa fa-tag"></i>
-                        </div>
-                        <div class="col-md-8">
-                          Total sales
-                          <h4>4522 DT</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <br>
-              <div class="col-md-5">
-                <h2>
-                  <span class="blue-heading">
-                    Communication options
-                    <a href="">
-                      <i class="fa fa-plus"></i>
-                    </a>
-                    <a href="">
-                      <i class="fa fa-twitter"></i>
-                    </a>
-                    <a href="">
-                      <i class="fa fa-facebook"></i>
-                    </a>
-                  </span>
-                </h2>
-                <form>
-                  <table>
-                    <tr>
-                      <td><label for  = "user-phonenumber">Phone number</label></td>
-                      <td class="pull-right">
-                        <input type = "tel" name = "user-phonenumber" id="user-phonenumber">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><label for  = "user-skype">Skype</label></td>
-                      <td class="pull-right">
-                        <input type = "tel" name = "user-skype" id   = "user-skype">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><label for  = "user-facebook">Facebook</label></td>
-                      <td class="pull-right">
-                        <input type = "tel" name = "user-facebook" id   = "user-facebook">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><label for  = "user-twitter">Twitter</label></td>
-                      <td class="pull-right">
-                        <input type = "tel" name = "user-twitter" id   = "user-twitter">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><label for  = "user-dnsf">Do not show phone</label></td>
-                      <td class="pull-right">
-                        <select>
-                          <option value="true">Yes</option>
-                          <option value="false">No</option>
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><label for  = "user-phonenumber">Do not show email</label></td>
-                      <td class="pull-right">
-                        <select>
-                          <option value="true">Yes</option>
-                          <option value="false">No</option>
-                        </select>
-                      </td>
-                    </tr>
-                  </table>
-                </form>
-              </div>
-              <div class="col-md-7">
-                <h2>
-                  <span class="blue-heading">New tasks</span>
-                </h2>
-                <table class="table">
-                <thead class="thead-inverse thi">
-                  <tr>
-                    <th>#</th>
-                    <th>Type</th>
-                    <th>Due date</th>
-                    <th>Notes</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Visit doctor in Ariena</td>
-                    <td>15/06/2018</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua.</td>
-                    <td><button class="btn btn-pharma">Check</button></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Visit doctor in Ariena</td>
-                    <td>15/06/2018</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua.</td>
-                    <td><button class="btn btn-pharma">Check</button></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Visit doctor in Ariena</td>
-                    <td>15/06/2018</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua.</td>
-                    <td><button class="btn btn-pharma">Check</button></td>
-                  </tr>
-                </tbody>
-              </table>
-              </div>
-            </div>
-          </div>
-        </div>
         </div>
       </div>
     </div>
@@ -354,69 +104,33 @@
 
 <script>
 /* eslint-disable no-return-assign */
-import Register from './Register'
-import Datepicker from 'vuejs-datepicker'
-import ReportsService from '@/services/ReportsService'
+import AdminList from '@/components/adminReports/List'
+import AdminReport from '@/components/adminReports/Report'
 
 export default {
   name: 'Admin',
   components: {
-    'register': Register,
-    Datepicker
+    'list': AdminList,
+    reportToApproveID: ''
   },
   data () {
     return {
-      reports: []
+      currentComponent: AdminList
     }
   },
   methods: {
-    async getReports () {
-      try {
-        const response = await ReportsService.getReports()
-        return response.data
-      } catch (err) {
-        return undefined
-      }
+    singleReport () {
+      this.currentComponent = AdminReport
+    },
+    back () {
+      this.currentComponent = AdminList
     }
   },
   mounted: function () {
-    this.getReports().then(data => this.reports = data)
   }
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   /* Credits to https://bootsnipp.com/dotstrap for this stylish search bar */
-  .custom-search-input .search-query {
-    padding-right: 3px;
-    padding-right: 4px \9;
-    padding-left: 3px;
-    padding-left: 4px \9;
-    margin-bottom: 0;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-  }
-  .custom-search-input button {
-    border: 0;
-    background: none;
-    padding: 2px 5px;
-    margin-top: 32px;
-    position: relative;
-    left: -28px;
-    margin-bottom: 0;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    color:#D9230F;
-  }
-  .custom-search-input .search-query:focus + button {
-    z-index: 3;
-  }
-  .custom-search-input .search-query button:focus{
-    border-style: none;
-  }
-  .search-query{
-    margin-top: 24px
-  }
 </style>

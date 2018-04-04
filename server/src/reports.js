@@ -13,6 +13,16 @@ router.get('/', function (req, res, next) {
   })
 })
 
+router.get('/:reportId', function (req, res, next) {
+  Reports.findOne({'_id': req.params.reportId}).populate('delegate').exec(function (err, report) {
+    if (err) {
+      res.send(err)
+    } else {
+      console.log('Testing delegate population: ', report.delegate)
+      res.json(report)
+    }
+  })
+})
 router.get('/delegate/:delegateid', function (req, res, next) {
   console.log('Getting the id from the url: ', req.params.delegateid)
   Reports.find({'delegate': req.params.delegateid}, function (err, reports) {
@@ -32,6 +42,7 @@ router.post('/add', function (req, res, next) {
     case 'Pharmacy':
       ReportObj = new Reports({
         date: new Date(),
+        type: req.body.type,
         pharmacy: req.body.pharmacyName,
         potential: req.body.pharmacyPotential,
         objectif: req.body.visitObjectif,
@@ -45,6 +56,7 @@ router.post('/add', function (req, res, next) {
     case 'Wholesaler':
       ReportObj = new Reports({
         date: new Date(),
+        type: req.body.type,
         wholesaler: req.body.wholesalerName,
         potential: req.body.wholesalerPotential,
         objectif: req.body.visitObjectif,
@@ -58,6 +70,7 @@ router.post('/add', function (req, res, next) {
     case 'Hospital':
       ReportObj = new Reports({
         date: new Date(),
+        type: req.body.type,
         hospital: req.body.hospital,
         potential: req.body.hospitalPotential,
         objectif: req.body.visitObjectif,
@@ -70,6 +83,7 @@ router.post('/add', function (req, res, next) {
     case 'Clinic':
       ReportObj = new Reports({
         date: new Date(),
+        type: req.body.type,
         clinic: req.body.clinic,
         potential: req.body.clinicPotential,
         objectif: req.body.visitObjectif,
@@ -82,6 +96,7 @@ router.post('/add', function (req, res, next) {
     case 'Doctor':
       ReportObj = new Reports({
         date: new Date(),
+        type: req.body.type,
         doctor: req.body.doctorName,
         potential: req.body.doctorPotential,
         objectif: req.body.visitObjectif,
