@@ -5,6 +5,8 @@ const morgan = require('morgan')
 const db = require('./config/connection')
 const user = require('./user')
 const reports = require('./reports')
+const delegates = require('./delegates.js')
+const products = require('./products.js')
 const app = express()
 const config = require('./config/parameters')
 
@@ -13,6 +15,9 @@ app.use(bodyParser.json())
 app.use(cors())
 app.use('/users', user)
 app.use('/reports', reports)
+app.use('/delegates', delegates)
+app.use('/products', products)
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   var err = new Error('Not Found')

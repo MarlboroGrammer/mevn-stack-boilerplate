@@ -35,6 +35,7 @@
 
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
+import DelegatesService from '@/services/DelegatesService'
 
 export default {
   name: 'Login',
@@ -55,6 +56,9 @@ export default {
         })
         this.$store.dispatch('setToken', response.data.userToken)
         this.$store.dispatch('setUser', response.data.signedUser)
+        DelegatesService.getDelegate(response.data.signedUser._id).then(res => {
+          this.$store.dispatch('setDelegate', res.data._id)
+        })
         this.$router.push({name: 'Delegate'})
         console.log(response.data)
       } catch (error) {
@@ -64,7 +68,7 @@ export default {
     }
   },
   beforeCreate: function () {
-    if (this.$store.userLogged === true) {
+    if (this.$store.getters.isLoggedIn === true) {
       this.$router.push({name: 'Delegate'})
     }
   }

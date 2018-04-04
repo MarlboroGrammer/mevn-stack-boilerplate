@@ -15,6 +15,7 @@ export default new Vuex.Store({
   state: {
     token: null,
     user: null,
+    delegate: null,
     userLogged: false
   },
   mutations: {
@@ -28,11 +29,25 @@ export default new Vuex.Store({
     },
     setUser (state, user) {
       state.user = user
+    },
+    setDelegate (state, delegate) {
+      state.delegate = delegate
+    },
+    logout (state) {
+      state.user = null
+      state.token = null
+      state.userLogged = false
     }
   },
   getters: {
     isLoggedIn (state) {
       return state.userLogged
+    },
+    getUser (state) {
+      return state.user
+    },
+    getDelegate (state) {
+      return state.delegate
     }
   },
   actions: {
@@ -41,6 +56,12 @@ export default new Vuex.Store({
     },
     setUser ({commit}, user) {
       commit('setUser', user)
+    },
+    setDelegate ({commit}, delegate) {
+      commit('setDelegate', delegate)
+    },
+    logout ({commit}) {
+      commit('logout')
     }
   },
   plugins: [vuexLocalStorage.plugin]

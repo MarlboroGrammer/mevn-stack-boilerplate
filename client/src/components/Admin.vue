@@ -118,7 +118,7 @@
                   <th scope="row">3</th>
                   <td>{{ report.type }}</td>
                   <td>{{ report.date | formatDate }}</td>
-                  <td>{{ report.delegate }}</td>
+                  <td>{{ report.delegate.surname}}</td>
                 </tr>
               </tbody>
             </table>

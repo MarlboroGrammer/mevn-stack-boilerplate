@@ -4,16 +4,38 @@ var client = require('./client.js')
 var delegate = require('./delegate')
 var reportSchema = new mongoose.Schema({
   date: Date,
-  type: {
-    type: String,
-    enum: ['Pharmacist', 'Doctor', 'Wholesaler', 'Hospital', 'Clinic']
+  objectif: String,
+  potential: String,
+  pharmacy: String,
+  doctor: String,
+  wholesaler: String,
+  hospital: {
+    name: String,
+    serivce: String,
+    doctorName: String,
+    Specialty: String,
+    doctorTitle: String
   },
-  entries: {
-    questions: [String],
-    answers: [String]
+  clinic: {
+    name: String,
+    serivce: String,
+    doctorName: String,
+    Specialty: String,
+    doctorTitle: String
   },
+  order: {
+    type: {type: String, enum: ['Pack gros 1', 'Pack gros 2', 'Pack gros 3', 'Regular']},
+    products: [{productName: String, quantity: Number}],
+    TotalEL: Number
+  },
+  potentialProducts: [
+    {productName: String, note: String}
+  ],
+  samples: [
+    {sampleName: String, quantity: Number}
+  ],
   delegate: {type: mongoose.Schema.ObjectId, ref: 'delegate'},
-  client: {type: mongoose.Schema.ObjectId, ref: 'client'}
+  notes: String
 }, { collection: 'report' })
 
 module.exports = mongoose.model('report', reportSchema)

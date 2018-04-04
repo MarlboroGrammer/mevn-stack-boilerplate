@@ -1,3 +1,4 @@
+<!-- eslint-disable -->
 <template>
   <div>
     <nav class="navbar navbar-absolute-top pharma-nav">
@@ -31,9 +32,7 @@
                           <a class="top-link" href="">Help</a>
                         </li>
                         <li>
-                          <router-link to="/">
-                            <a class="top-link" href="/">Logout</a>
-                          </router-link>
+                        <a class="top-link" @click="logout()">Logout</a>
                         </li>
                     </ul>
                 </div>
@@ -65,11 +64,16 @@
 
       <div class="tab-content">
         <div id="activity" class="tab-pane fade in active">
-          <register></register>
         </div>
         <div id="reports" class="tab-pane fade">
-          <h3>Menu 1</h3>
-          <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          <h2>Reports Management</h2>
+          <div class="row">
+            <div class="col-md-12">
+              <button class="btn btn-danger" @click="loadAddComponent()" v-if="!isAdd">Add a report</button>
+              <div :is="currentComponent"></div>
+              <button class="btn btn-primary" @click="loadListComponent()" v-if="isAdd">Cancel</button>
+            </div>
+          </div>
         </div>
 
         <div id="calendar" class="tab-pane fade">
@@ -300,260 +304,127 @@
 </template>
 
 <script>
-import Register from './Register'
-const d3 = require('d3')
-const topojson = require('topojson')
+/* eslint-disable no-return-assign */
+import ListReports from '@/components/delegateReports/List'
+import FormReports from '@/components/delegateReports/Form'
 
 export default {
   name: 'Delegate',
   components: {
-    'register': Register
+    'list': ListReports,
+    'form': FormReports
   },
   data () {
     return {
+      isAdd: false,
+      reports: [],
+      currentComponent: ListReports
     }
   },
   methods: {
-    loadDashboard: function () {
-      d3.json('http://localhost:3000/api/data2', function (error, data) {
-        if (error) {
-          throw new Error()
-        }
-        var margin = {top: 30, right: 20, bottom: 30, left: 50}
-        var width = 800 - margin.left - margin.right
-        var height = 270 - margin.top - margin.bottom
-
-        data = data.filter((d) => d.at >= '2014-01-01' && d.at <= '2014-02-01')
-
-        this.drawPieChart(data.filter((done) => done.status === 'Done').length, data.filter((notDone) => notDone.status === 'Not done').length)
-        this.drawTunisiaMap()
-
-        var visistBydDate = d3.nest().key(function (d) { return d.at }).entries(data)
-        let formattedData = []
-        let maxX = 0
-        visistBydDate.forEach(function (d) {
-          let formattedD = {
-            at: new Date(d.key),
-            done: d.values.filter((x) => x.status === 'Done').length,
-            total: d.values.length
-          }
-          formattedData.push(formattedD)
-          maxX = (maxX < formattedD.total ? formattedD.total : maxX)
-        })
-        formattedData.sort(function (a, b) { return a['at'] - b['at'] })
-        console.log('Formatted data:', formattedData)
-        var x = d3.time.scale().range([0, width])
-        var y = d3.scale.linear().range([height, 0])
-
-        var xAxis = d3.svg.axis().scale(x).orient('bottom').ticks(formattedData.length)
-
-        console.log(maxX)
-        var yAxis = d3.svg.axis().scale(y).orient('left').ticks(maxX)
-
-        var valueline = d3.svg.line()
-          .x(function (d) { return x(d.at) })
-          .y(function (d) { return y(d.total) })
-        var valueline2 = d3.svg.line()
-          .x(function (d) { return x(d.at) })
-          .y(function (d) { return y(d.done) })
-
-        var svg = d3.select('#linechart')
-          .append('svg')
-          .attr('width', width + margin.left + margin.right)
-          .attr('height', height + margin.top + margin.bottom)
-          .append('g')
-          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-        x.domain(d3.extent(formattedData, function (d) { return d.at }))
-        y.domain([0, d3.max(formattedData, function (d) { return d.total })])
-
-        svg.append('path')
-          .attr('class', 'line')
-          .attr('d', valueline(formattedData))
-
-        svg.append('path')
-          .attr('class', 'line')
-          .style('stroke', 'red')
-          .attr('d', valueline2(formattedData))
-
-        svg.append('g')
-          .attr('class', 'x axis')
-          .attr('transform', 'translate(1,' + height + ')')
-          .call(xAxis)
-
-        svg.append('g')
-          .attr('class', 'y axis')
-          .call(yAxis)
-
-        svg.append('text')
-          .attr('transform', 'translate(' + (width - 10) + ',' + y(formattedData[0].total + 0.15) + ')')
-          .attr('dy', '.35em')
-          .attr('text-anchor', 'start')
-          .style('fill', 'blue')
-          .text('Total')
-
-        svg.append('text')
-          .attr('transform', 'translate(' + (width - 10) + ',' + y(formattedData[0].done - 0.85) + ')')
-          .attr('dy', '.35em')
-          .attr('text-anchor', 'start')
-          .style('fill', 'red')
-          .text('Done')
-      })
+    logout () {
+      console.log('Logout clicked')
+      this.$store.dispatch('logout')
+      this.$router.push({name: 'Login'})
     },
-    drawPieChart: function (done, notDone) {
-      var w = 500
-      var h = 500
-      var r = 150
-      var color = d3.scale.category20()
-
-      var data = [
-        {'label': 'Done', 'value': done},
-        {'label': 'Not Done', 'value ': notDone}
-      ]
-      var vis = d3.select('#piechart')
-        .append('svg:svg')
-        .data([data])
-        .attr('width', w)
-        .attr('height', h)
-        .append('svg:g')
-        .attr('transform', 'translate(' + r + ',' + r + ')')
-
-      var arc = d3.svg.arc()
-        .outerRadius(r)
-
-      var pie = d3.layout.pie()
-        .value(function (d) { return d.value })
-
-      var arcs = vis.selectAll('g.slice')
-        .data(pie)
-        .enter()
-        .append('svg:g')
-        .attr('class', 'slice')
-
-      arcs.append('svg:path')
-        .attr('fill', function (d, i) { return color(i) })
-        .attr('d', arc)
-
-      arcs.append('svg:text')
-        .attr('transform', function (d) {
-          d.innerRadius = 0
-          d.outerRadius = r
-          return 'translate(' + arc.centroid(d) + ')'
-        }).attr('text-anchor', 'middle').text(function (d, i) { return data[i].label })
+    loadAddComponent () {
+      this.currentComponent = FormReports
+      this.isAdd = true
     },
-    drawTunisiaMap: function () {
-      var width = 220
-      var height = 500
-      var path = d3.geo.path()
-
-      var svg = d3.select(this.$refs.tunisiamap).append('svg')
-        .attr('width', width)
-        .attr('height', height)
-
-      d3.json('https://gist.githubusercontent.com/mohamed-ali/8732826/raw/901a577fafad6277e38f2c0f6bf09561fd4124c9/tunisia.json', function (error, topology) {
-        if (error) {
-          throw new Error()
-        }
-        console.log(topology)
-        var featureCollection = topojson.feature(topology, topology.objects.governorates)
-        var bounds = d3.geo.bounds(featureCollection)
-        var centerX = d3.sum(bounds, function (d) { return d[0] }) / 1.15
-        var centerY = d3.sum(bounds, function (d) { return d[1] }) / 2
-        var projection = d3.geo.mercator()
-          .scale(3000)
-          .center([centerX, centerY])
-        path.projection(projection)
-        svg.selectAll('path')
-          .data(featureCollection.features)
-          .enter().append('path')
-          .attr('d', path)
-      })
-    },
-    mounted: function () {
-      this.$refs.tunisiamap.append('hi')
-      d3.json('http://localhost:3000/api/data2', function (error, data) {
-        if (error) {
-          throw new Error()
-        }
-        var margin = {top: 30, right: 20, bottom: 30, left: 50}
-        var width = 800 - margin.left - margin.right
-        var height = 270 - margin.top - margin.bottom
-
-        data = data.filter((d) => d.at >= '2014-01-01' && d.at <= '2014-02-01')
-
-        this.drawPieChart(data.filter((done) => done.status === 'Done').length, data.filter((notDone) => notDone.status === 'Not done').length)
-        this.drawTunisiaMap()
-
-        var visistBydDate = d3.nest().key(function (d) { return d.at }).entries(data)
-        let formattedData = []
-        let maxX = 0
-        visistBydDate.forEach(function (d) {
-          let formattedD = {
-            at: new Date(d.key),
-            done: d.values.filter((x) => x.status === 'Done').length,
-            total: d.values.length
-          }
-          formattedData.push(formattedD)
-          maxX = (maxX < formattedD.total ? formattedD.total : maxX)
-        })
-        formattedData.sort(function (a, b) { return a['at'] - b['at'] })
-        console.log('Formatted data:', formattedData)
-        var x = d3.time.scale().range([0, width])
-        var y = d3.scale.linear().range([height, 0])
-
-        var xAxis = d3.svg.axis().scale(x).orient('bottom').ticks(formattedData.length)
-
-        console.log(maxX)
-        var yAxis = d3.svg.axis().scale(y).orient('left').ticks(maxX)
-
-        var valueline = d3.svg.line()
-          .x(function (d) { return x(d.at) })
-          .y(function (d) { return y(d.total) })
-        var valueline2 = d3.svg.line()
-          .x(function (d) { return x(d.at) })
-          .y(function (d) { return y(d.done) })
-
-        var svg = d3.select(this.$refs.linechart)
-          .append('svg')
-          .attr('width', width + margin.left + margin.right)
-          .attr('height', height + margin.top + margin.bottom)
-          .append('g')
-          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-        x.domain(d3.extent(formattedData, function (d) { return d.at }))
-        y.domain([0, d3.max(formattedData, function (d) { return d.total })])
-
-        svg.append('path')
-          .attr('class', 'line')
-          .attr('d', valueline(formattedData))
-
-        svg.append('path')
-          .attr('class', 'line')
-          .style('stroke', 'red')
-          .attr('d', valueline2(formattedData))
-
-        svg.append('g')
-          .attr('class', 'x axis')
-          .attr('transform', 'translate(1,' + height + ')')
-          .call(xAxis)
-
-        svg.append('g')
-          .attr('class', 'y axis')
-          .call(yAxis)
-
-        svg.append('text')
-          .attr('transform', 'translate(' + (width - 10) + ',' + y(formattedData[0].total + 0.15) + ')')
-          .attr('dy', '.35em')
-          .attr('text-anchor', 'start')
-          .style('fill', 'blue')
-          .text('Total')
-
-        svg.append('text')
-          .attr('transform', 'translate(' + (width - 10) + ',' + y(formattedData[0].done - 0.85) + ')')
-          .attr('dy', '.35em')
-          .attr('text-anchor', 'start')
-          .style('fill', 'red')
-          .text('Done')
-      })
+    loadListComponent () {
+      this.currentComponent = ListReports
+      this.isAdd = false
     }
+  },
+  mounted: function () {
+    // console.log(this.currentDelegate)
+    // this.getDelegate(this.$store.state.user._id)
+    // console.log(this.currentDelegate)
+    // D3 JSON code, to be implemented
+    // this.$refs.tunisiamap.append('hi')
+    /* d3.json('http://localhost:3000/api/data2', function (error, data) {
+      if (error) {
+        throw new Error()
+      }
+      var margin = {top: 30, right: 20, bottom: 30, left: 50}
+      var width = 800 - margin.left - margin.right
+      var height = 270 - margin.top - margin.bottom
+
+      data = data.filter((d) => d.at >= '2014-01-01' && d.at <= '2014-02-01')
+
+      this.drawPieChart(data.filter((done) => done.status === 'Done').length, data.filter((notDone) => notDone.status === 'Not done').length)
+      this.drawTunisiaMap()
+
+      var visistBydDate = d3.nest().key(function (d) { return d.at }).entries(data)
+      let formattedData = []
+      let maxX = 0
+      visistBydDate.forEach(function (d) {
+        let formattedD = {
+          at: new Date(d.key),
+          done: d.values.filter((x) => x.status === 'Done').length,
+          total: d.values.length
+        }
+        formattedData.push(formattedD)
+        maxX = (maxX < formattedD.total ? formattedD.total : maxX)
+      })
+      formattedData.sort(function (a, b) { return a['at'] - b['at'] })
+      console.log('Formatted data:', formattedData)
+      var x = d3.time.scale().range([0, width])
+      var y = d3.scale.linear().range([height, 0])
+
+      var xAxis = d3.svg.axis().scale(x).orient('bottom').ticks(formattedData.length)
+
+      console.log(maxX)
+      var yAxis = d3.svg.axis().scale(y).orient('left').ticks(maxX)
+
+      var valueline = d3.svg.line()
+        .x(function (d) { return x(d.at) })
+        .y(function (d) { return y(d.total) })
+      var valueline2 = d3.svg.line()
+        .x(function (d) { return x(d.at) })
+        .y(function (d) { return y(d.done) })
+
+      var svg = d3.select(this.$refs.linechart)
+        .append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+      x.domain(d3.extent(formattedData, function (d) { return d.at }))
+      y.domain([0, d3.max(formattedData, function (d) { return d.total })])
+
+      svg.append('path')
+        .attr('class', 'line')
+        .attr('d', valueline(formattedData))
+
+      svg.append('path')
+        .attr('class', 'line')
+        .style('stroke', 'red')
+        .attr('d', valueline2(formattedData))
+
+      svg.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(1,' + height + ')')
+        .call(xAxis)
+
+      svg.append('g')
+        .attr('class', 'y axis')
+        .call(yAxis)
+
+      svg.append('text')
+        .attr('transform', 'translate(' + (width - 10) + ',' + y(formattedData[0].total + 0.15) + ')')
+        .attr('dy', '.35em')
+        .attr('text-anchor', 'start')
+        .style('fill', 'blue')
+        .text('Total')
+
+      svg.append('text')
+        .attr('transform', 'translate(' + (width - 10) + ',' + y(formattedData[0].done - 0.85) + ')')
+        .attr('dy', '.35em')
+        .attr('text-anchor', 'start')
+        .style('fill', 'red')
+        .text('Done')
+    }) */
   }
 }
 </script>
