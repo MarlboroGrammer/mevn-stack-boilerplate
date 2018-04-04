@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Delegate from '@/components/Delegate'
+import Visits from '@/components/Visit'
+import VisitsAdmin from '@/components/VisitsAdmin'
 
 Vue.use(Router)
 
@@ -23,6 +25,16 @@ export default new Router({
       path: '/delegate',
       name: 'Delegate',
       component: Delegate
+    },
+    {
+      path: '/Visits',
+      name: 'Visits',
+      component: Visits
+    },
+    {
+      path: '/VisitsAdmin',
+      name: 'VisitsAdmin',
+      component: VisitsAdmin
     }
   ]
 })
