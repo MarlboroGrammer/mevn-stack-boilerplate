@@ -8,10 +8,12 @@ import sync from 'vuex-router-sync'
 import store from '@/store/store'
 import DateFilter from '@/filters/datefilter'
 import VModal from 'vue-js-modal'
+import VuePaginate from 'vue-paginate'
 
 Vue.config.productionTip = false
 
 Vue.use(VModal, { dialog: true })
+Vue.use(VuePaginate)
 
 /* eslint-disable no-new */
 new Vue({

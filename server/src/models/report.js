@@ -35,7 +35,8 @@ var reportSchema = new mongoose.Schema({
     {sampleName: String, quantity: Number}
   ],
   delegate: {type: mongoose.Schema.ObjectId, ref: 'delegate'},
-  notes: String
+  notes: String,
+  status: {type: String, enum: ['Accepted', 'Rejected', 'Pending'], default: 'Pending'}
 }, { collection: 'report' })
 
 module.exports = mongoose.model('report', reportSchema)
