@@ -7,8 +7,11 @@ import router from './router'
 import sync from 'vuex-router-sync'
 import store from '@/store/store'
 import DateFilter from '@/filters/datefilter'
+import VModal from 'vue-js-modal'
 
 Vue.config.productionTip = false
+
+Vue.use(VModal, { dialog: true })
 
 /* eslint-disable no-new */
 new Vue({

@@ -11,14 +11,14 @@ var reportSchema = new mongoose.Schema({
   wholesaler: String,
   hospital: {
     name: String,
-    serivce: String,
+    service: String,
     doctorName: String,
     Specialty: String,
     doctorTitle: String
   },
   clinic: {
     name: String,
-    serivce: String,
+    service: String,
     doctorName: String,
     Specialty: String,
     doctorTitle: String
