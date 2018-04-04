@@ -6,6 +6,7 @@ var clientSchema = new mongoose.Schema({
     latit: Number
   },
   area: String,
+  name: String,
   address: {
     city: String,
     postalCode: Number
@@ -14,6 +15,6 @@ var clientSchema = new mongoose.Schema({
   potential: {type: String, enum: ['A', 'B', 'C']},
   phoneNumber: Number,
   email: String
-}, { collection: 'client' })
+}, { collection: 'client' }, { versionKey: false })
 
 module.exports = mongoose.model('client', clientSchema)
