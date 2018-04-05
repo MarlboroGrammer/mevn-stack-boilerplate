@@ -3,15 +3,10 @@
   <div>
     <div class="row">
     <br>
-    <div class="col-md-3">
+    <div class="col-md-4">
       <div class="custom-search-input">
         <div class="input-group">
-            <input type="text" class="search-query form-control" placeholder="Search" name="report-keywords" />
-            <span class="input-group-btn">
-                <button class="btn btn-danger" type="button">
-                    <span class=" glyphicon glyphicon-search"></span>
-                </button>
-            </span>
+          <h3>Filter reports by:</h3>
         </div>
       </div>
     </div>
@@ -19,6 +14,7 @@
        <div class="form-group report-type-container">
           <label for="report-type">Type</label>
           <select name="report-type" class="form-control" v-model="searchType">
+            <option value="All"><strong>All</strong></option>
             <option value="Doctor">Doctor</option>
             <option value="Pharmacy">Pharmacy</option>
             <option value="Wholesaler">Wholesaler</option>
@@ -40,23 +36,26 @@
       <button class="btn btn-success btn-block" @click="filterReports">Search</button>
     </div>
     </div>
+    <hr>
     <paginate ref="paginator"
-          name="reports"
-          :list="reports"
-          :per="2"
+        name="reports"
+        :list="reports"
+        :per="2"
         >
-    <table class="table table-sm">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Date</th>
-          <th scope="col">Delegate</th>
-          <th scope="col">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        
-          <tr v-for="(report, index) in paginated('reports')">
+      <span class="text-center" v-if="reports.length === 0">
+        <div class="alert alert-warning">No records found</div>
+      </span>
+      <table class="table table-sm" v-if="reports.length > 0">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Date</th>
+            <th scope="col">Delegate</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(report, index) in paginated('reports')" :key="report._id">
             <th scope="row">{{index + 1}}</th>
             <td>{{ report.date | formatDate }}</td>
             <td>{{ report.delegate.surname}}</td>
@@ -65,12 +64,11 @@
             <td v-if="report.status === 'Rejected'"><span class="badge progress-bar-danger">{{report.status}}</span></td>
             <td><button class="btn btn-primary" @click="viewReport(report._id)">View</button></td>
           </tr>
-        
-      </tbody>
-    </table>
+        </tbody>
+      </table>
     </paginate>
     <div class="text-center">
-      <paginate-links for="reports" :show-step-links="true"></paginate-links>
+      <paginate-links for="reports" :show-step-links="true" v-if="reports.length > 0"></paginate-links>
     </div>
   </div>
 </template>
@@ -111,28 +109,54 @@ export default {
       this.$parent.singleReport()
     },
     filterReports () {
-      console.log('List before fitler:', this.reports)
-      /* if (!this.dateFromFilter) {
-        this.reports = this.reports.filter(x => new Date(x.date) >= this.dateFromFilter)
+      this.reports = this.reportsCopy
+      if (this.dateFromFilter !== null) {
+        console.log('Date from filter activated!')
+        this.reports = this.reports.filter(x => this.dateFilter(new Date(x.date), this.dateFromFilter, 'GE'))
       }
-      if (!this.dateToFilter) {
-        this.reports = this.reports.filter(x => new Date(x.date) <= this.dateToFilter)
+      if (this.dateToFilter !== null) {
+        this.reports = this.reports.filter(x => this.dateFilter(new Date(x.date), this.dateToFilter, 'LT'))
       }
-      /*if (this.searchType !== '') {
+      if (this.searchType !== '') {
         console.log(this.searchType)
         this.reports = this.reports.filter(x => x.type === this.searchType)
-        console.log('List after type fitler:', this.reports)
-      } */
+      }
+      if (this.searchType === 'All') {
+        this.reports = this.reportsCopy
+        if (this.dateFromFilter !== null) {
+          this.reports = this.reports.filter(x => this.dateFilter(new Date(x.date), this.dateFromFilter, 'GE'))
+        }
+        if (this.dateToFilter !== null) {
+          this.reports = this.reports.filter(x => this.dateFilter(new Date(x.date), this.dateToFilter, 'LT'))
+        }
+      }
+    },
+    dateFilter (date1, date2, operand) {
+      switch (operand) {
+        case 'GE':
+          return date1.getDay() >= date2.getDay() &&
+          date1.getMonth() >= date2.getMonth() &&
+          date1.getYear() >= date2.getYear()
+        case 'LT':
+          return date1.getDay() <= date2.getDay() &&
+          date1.getMonth() <= date2.getMonth() &&
+          date1.getYear() <= date2.getYear()
+        default:
+          throw Error('operand is either GE or LT!')
+      }
     }
   },
-  mounted: function () {
-    this.getReports().then(data => this.reports = data)
+  beforeMount: function () {
+    this.getReports().then(data => {
+      this.reports.push.apply(this.reports, data)
+      this.reportsCopy = data
+    })
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped lang="less">
   .custom-search-input .search-query {
     padding-right: 3px;
     padding-right: 4px \9;
@@ -168,6 +192,9 @@ export default {
   ul.paginate-links{
     font-family: CamptonBold;
     font-size: 18px;
+    display: inline-flex;
+    list-style: none;
+    cursor: pointer;
   }
   ul.paginate-links li{
     text-align: center;

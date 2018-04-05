@@ -95,7 +95,7 @@
                  <tbody>
                    <tr v-for="potentialProduct in report.potentialProducts">
                      <td>{{ potentialProduct.productName }}</td>
-                     <td class="text-center">{{ potentialProduct.quantity}}</td>
+                     <td class="text-center">{{ potentialProduct.note}}</td>
                    </tr>
                  </tbody>
                 </table>

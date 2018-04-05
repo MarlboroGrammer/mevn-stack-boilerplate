@@ -2,7 +2,7 @@
 <template>
   <div>
     <h3>My reports</h3>
-    <paginate
+    <paginate ref="paginator"
       name="reports"
       :list="reports"
       :per="10"
@@ -28,7 +28,9 @@
       </tbody>
     </table>
     </paginate>
-    <paginate-links for="reports" :show-step-links="true"></paginate-links>
+    <div class="text-center">
+      <paginate-links for="reports" :show-step-links="true"></paginate-links>
+    </div>
   </div>
 </template>
 
@@ -64,21 +66,27 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .paginate-links.reports {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
+  ul.paginate-links{
+    font-family: CamptonBold;
+    font-size: 18px;
   }
-
-  .paginate-links.reports li.number {
-      float: left;
-      display: inline;
+  ul.paginate-links li{
+    cursor: pointer;
+    text-align: center;
+    display: inline;
+    margin: 10px;
+    padding: 5px;
+    padding-right: 8px;
+    border: 1px solid rgb(54, 169, 206);
+    border-radius: 15%;
   }
-
-  .paginate-links.reports li a {
-      display: block;
-      padding: 8px;
-      background-color: #dddddd;
+  ul.paginate-links li.active{
+    background-color: rgb(54, 169, 206);
+  }
+  ul.paginate-links li.active a{
+    color: white;
+  }
+  ul.paginate-links li.right-arrow, ul.paginate-links li.left-arrow{
+    border: none;
   }
 </style>

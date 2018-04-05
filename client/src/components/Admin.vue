@@ -32,9 +32,7 @@
                           <a class="top-link" href="">Help</a>
                         </li>
                         <li>
-                          <router-link to="/">
-                            <a class="top-link" href="/">Logout</a>
-                          </router-link>
+                            <a class="top-link" @click="logout">Logout</a>
                         </li>
                     </ul>
                 </div>
@@ -119,6 +117,11 @@ export default {
     }
   },
   methods: {
+    logout () {
+      console.log('Logout clicked')
+      this.$store.dispatch('logout')
+      this.$router.push({name: 'Login'})
+    },
     singleReport () {
       this.currentComponent = AdminReport
     },

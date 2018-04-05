@@ -24,7 +24,7 @@
           </div>
         </div>
       </div>
-      <div class="alert alert-danger" style="max-width: 500px;" ref="errmsg" id="errmsg" v-if="loginError">Son, wrong answer</div>
+      <div class="alert alert-danger" style="max-width: 500px;" ref="errmsg" id="errmsg" v-if="loginError">Please check your credentials</div>
       <div class="form-group">
         <button class="btn-green pull-right" @click="login">login </button>
       </div>
