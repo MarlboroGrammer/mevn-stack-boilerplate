@@ -11,6 +11,7 @@
                 <th>End-Date</th>
                 <th>Status</th>
                 <th>Type </th>
+                <th> Adresse </th>
                 <th>Actions </th>
             </tr>
         </thead>
@@ -22,14 +23,17 @@
                 <span v-else>  {{item.text}}  </span>
                 <td>
                   <input type="datetime-local" v-if="update" v-model="item.start_date" class="form-control">  </input>
-                 <span v-else>  {{ item.start_date|date("m/d/Y") }}  </span>
+                 <span v-else>  {{ item.start_date }}  </span>
                 </td>
                 <td>
                   <input type="datetime-local" v-if="update" v-model="item.end_date" class="form-control">  </input>
-                 <span v-else>  {{ item.end_date|date("m/d/Y") }}  </span>
+                 <span v-else>  {{ item.end_date }}  </span>
                 </td>
                 <td>
-                <input type="text" v-if="update" v-model="item.status" class="form-control">  </input>
+                    <select v-if="update" class="form-control" v-model="item.status">
+                    <option disabled value="">Choisissez</option>
+                    <option>Done</option>
+                    </select>
                  <span v-else>  {{ item.status }}  </span>
                  </td>
                 <td> 
@@ -40,6 +44,10 @@
                     <option>Wholesaler</option>
                     </select>
                 <span v-else>  {{ item.visitType}} </span>
+                </td>
+                  <td> 
+                <input type="text" v-if="update" v-model="item.adresse" class="form-control">  </input>
+                <span v-else>  {{ item.Adresse}} </span>
                 </td>
                 <td>
                 <div v-if="!update"  class="btn-group">
@@ -65,26 +73,35 @@
 import VisitService from '@/services/VisitService'
 import VuejsDialog from "vuejs-dialog"
 
+
 export default {
   name: 'VisitAdmin',
   data () {
     return {
       visits: [],
-      update : false
+      update : false,
+      address: ''
     }
   },
   methods: {
       DeleteVisits (item) {
-       this.$dialog.confirm('Confirm delete ?')
-        .then(function () {
-         const response = VisitService.deleteVisits(item)
+     this.$dialog.confirm("If you delete this record, it'll be gone forever.", {
+    loader: true 
+})
+    .then((dialog) => {
+       const response = VisitService.deleteVisits(item)
          var index = this.visits.indexOf(item); 
-         this.visits.splice(index, 1)
-          })
-        .catch(function () {
+         this.visits.splice(index, 1);
+        setTimeout(() => {
+            console.log('Delete action completed ');
+            dialog.close();
+        }, 2500);
+ 
+    })
+    .catch(() => {
+        // Triggered when cancel button is clicked
+        console.log('Delete aborted');
     });
-     
-     
       
     },
     async modifyToogle () {
@@ -93,18 +110,24 @@ export default {
 
     async updateVisit (item) { 
         console.log(item._id)
+        if (this.address!='')
+        {
+         item.Adresse=this.address
+        }
+        
           const response = await VisitService.putVisits(item);
           this.update=false;
           let index=this.visits.indexOf(item);
           this.visits.splice(index,1,item);
+          this.address=''
     },
     async InsertVisit()
     {
        this.$router.push({name: 'Visits'})
-    }
-
+    },
   },
   mounted () {
+
     const response = VisitService.getVisits()
     .then(response => {
       this.visits = response.data

@@ -37,9 +37,6 @@
       <input type="datetime-local" name="end_date"  class="form-control" v-model="end_date" required>
     </div>
 
-   
-
-
     <div class="form-group">
       <button @click="insert" class="btn btn-success">Valider</button>
       <button @click="CancelVisit" class="btn btn-primary">Cancel</button>
@@ -73,14 +70,15 @@ export default {
   methods: {
     async insert () {
       console.log(this.start_date)
-      if (this.start_date <this.end_date && this.type!="")
+      if (this.start_date <this.end_date && this.type!="" && this.text!="" && this.address!="")
       {
        const response = await VisitService.insert({
         text: this.text,
         status: this.status,
         start_date: this.start_date,
         end_date: this.end_date,
-        visitType: this.visitType
+        visitType: this.visitType,
+        Adresse: this.address
       })
       this.$notify({
        group: 'foo',
@@ -104,13 +102,40 @@ export default {
        type: 'error'
         });
         }
-        this.$notify({
+        if (this.text=="")
+        {
+           this.$notify({
+       group: 'foo',
+       title: 'Pharmakeys Notification',
+       text: 'Must write a description for the visit',
+       duration: 5000,
+       type: 'error'
+        });
+
+        }
+        if (this.address=="")
+        {
+              this.$notify({
+       group: 'foo',
+       title: 'Pharmakeys Notification',
+       text: 'Address is not valid',
+       duration: 5000,
+       type: 'error'
+        });
+
+        }
+        if (this.start_date >this.end_date)
+        {
+             this.$notify({
        group: 'foo',
        title: 'Pharmakeys Notification',
        text: 'Date invalide',
        duration: 5000,
        type: 'error'
         });
+
+        }
+     
        
       }
    
