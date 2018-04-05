@@ -5,6 +5,7 @@ import Register from '@/components/Register'
 import Delegate from '@/components/Delegate'
 import addClient from '@/components/addClient'
 import listClient from '@/components/listClient'
+import map from '@/components/map'
 
 Vue.use(Router)
 
@@ -30,6 +31,11 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Register
+    },
+    {
+      path: '/map',
+      name: 'map',
+      component: map
     },
     {
       path: '/delegate',
