@@ -34,19 +34,19 @@ router.post('/authenticate', function (req, res) {
         error: 'The login informatuon was incorrect'
       })
     } else {
-      console.log('gonna compare password')
+      console.log('comparing password')
       if (bcrypt.compareSync(req.body.password, data.password)) {
         console.log('Our username is: ', req.body.username)
         var token = jwtSignUser(req.body.username)
-        console.log('Fuck!', token)
+        console.log('Wrong credentials ', token)
         res.send({
           signedUser: data,
           userToken: token
         })
       } else {
-        console.log('password is incorrect')
+        console.log('Password is incorrect')
         return res.status(403).send({
-          error: 'The login informatuon was incorrect'
+          error: 'The login information was incorrect'
         })
       }
     }
