@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Delegate from '@/components/Delegate'
+import addClient from '@/components/addClient'
+import listClient from '@/components/listClient'
 
 Vue.use(Router)
 
@@ -13,6 +15,16 @@ export default new Router({
       path: '/',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/addClient',
+      name: 'addClient',
+      component: addClient
+    },
+    {
+      path: '/listeClient',
+      name: 'listeClient',
+      component: listClient
     },
     {
       path: '/register',

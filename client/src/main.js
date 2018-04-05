@@ -6,8 +6,15 @@ import App from './App'
 import router from './router'
 import sync from 'vuex-router-sync'
 import store from '@/store/store'
+import VuejsDialog from "vuejs-dialog"
+import VuetifyGoogleAutocomplete from 'vuetify-google-autocomplete';
 
 Vue.config.productionTip = false
+Vue.use(VuejsDialog)
+Vue.use(VuetifyGoogleAutocomplete, {
+  apiKey: 'AIzaSyD1_HG5ANhWoLsloCnp2kkbCUp4mWqvzxs', 
+});
+
 
 /* eslint-disable no-new */
 new Vue({

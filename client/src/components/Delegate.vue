@@ -58,6 +58,9 @@
         <li>
           <a data-toggle="tab" href="#inbox">Presentations</a>
         </li>
+          <li>
+          <a data-toggle="tab" href="#client">Clintelle</a>
+        </li>
         <li>
           <a data-toggle="tab" href="#overview">Overview</a>
         </li>
@@ -65,7 +68,10 @@
 
       <div class="tab-content">
         <div id="activity" class="tab-pane fade in active">
-          <register></register>
+          
+        </div>
+         <div id="client" class="tab-pane fade in active">
+          <client></client>
         </div>
         <div id="reports" class="tab-pane fade">
           <h3>Menu 1</h3>
@@ -301,13 +307,17 @@
 
 <script>
 import Register from './Register'
+
+import Client from './listClient'
+
 const d3 = require('d3')
 const topojson = require('topojson')
 
 export default {
   name: 'Delegate',
   components: {
-    'register': Register
+    'register': Register,
+    'client' : Client
   },
   data () {
     return {

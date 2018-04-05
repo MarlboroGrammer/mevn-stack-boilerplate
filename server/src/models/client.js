@@ -9,7 +9,8 @@ var clientSchema = new mongoose.Schema({
   name: String,
   address: {
     city: String,
-    postalCode: Number
+    postalCode: Number,
+    street: String
   },
   type: {type: String, enum: ['Pharmacien', 'Docteur', 'Hospital', 'Clinique']},
   potential: {type: String, enum: ['A', 'B', 'C']},
