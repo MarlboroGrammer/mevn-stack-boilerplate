@@ -29,17 +29,22 @@
     </div>
     <div class="col-md-2">
       <label for="report-from">From</label>
-      <datepicker name="report-from" v-model="dateFromFilter" ></datepicker>
+      <datepicker name="report-from" v-model="dateFromFilter" :input-class="'form-control'"></datepicker>
     </div>
     <div class="col-md-2">
       <label for="report-to">To</label>
-      <datepicker name="report-to" v-model="dateToFilter"></datepicker>
+      <datepicker name="report-to" v-model="dateToFilter" :input-class="'form-control'" ></datepicker>
     </div>
     <div class="col-md-2">
       <br>
       <button class="btn btn-success btn-block" @click="filterReports">Search</button>
     </div>
     </div>
+    <paginate ref="paginator"
+          name="reports"
+          :list="reports"
+          :per="2"
+        >
     <table class="table table-sm">
       <thead>
         <tr>
@@ -50,17 +55,23 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(report, index) in reports">
-          <th scope="row">{{index + 1}}</th>
-          <td>{{ report.date | formatDate }}</td>
-          <td>{{ report.delegate.surname}}</td>
-          <td v-if="report.status === 'Pending'"><span class="badge progress-bar-warning">{{report.status}}</span></td>
-          <td v-if="report.status === 'Accepted'"><span class="badge progress-bar-success">{{report.status}}</span></td>
-          <td v-if="report.status === 'Rejected'"><span class="badge progress-bar-danger">{{report.status}}</span></td>
-          <td><button class="btn btn-primary" @click="viewReport(report._id)">View</button></td>
-        </tr>
+        
+          <tr v-for="(report, index) in paginated('reports')">
+            <th scope="row">{{index + 1}}</th>
+            <td>{{ report.date | formatDate }}</td>
+            <td>{{ report.delegate.surname}}</td>
+            <td v-if="report.status === 'Pending'"><span class="badge progress-bar-warning">{{report.status}}</span></td>
+            <td v-if="report.status === 'Accepted'"><span class="badge progress-bar-success">{{report.status}}</span></td>
+            <td v-if="report.status === 'Rejected'"><span class="badge progress-bar-danger">{{report.status}}</span></td>
+            <td><button class="btn btn-primary" @click="viewReport(report._id)">View</button></td>
+          </tr>
+        
       </tbody>
     </table>
+    </paginate>
+    <div class="text-center">
+      <paginate-links for="reports" :show-step-links="true"></paginate-links>
+    </div>
   </div>
 </template>
 
@@ -82,7 +93,8 @@ export default {
       reportsCopy: [],
       dateFromFilter: null,
       dateToFilter: null,
-      searchType: ''
+      searchType: '',
+      paginate: ['reports']
     }
   },
   methods: {
@@ -120,7 +132,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
   .custom-search-input .search-query {
     padding-right: 3px;
     padding-right: 4px \9;
@@ -152,5 +164,27 @@ export default {
   }
   .search-query{
     margin-top: 24px
+  }
+  ul.paginate-links{
+    font-family: CamptonBold;
+    font-size: 18px;
+  }
+  ul.paginate-links li{
+    text-align: center;
+    display: inline;
+    margin: 10px;
+    padding: 5px;
+    padding-right: 8px;
+    border: 1px solid rgb(54, 169, 206);
+    border-radius: 15%;
+  }
+  ul.paginate-links li.active{
+    background-color: rgb(54, 169, 206);
+  }
+  ul.paginate-links li.active a{
+    color: white;
+  }
+  ul.paginate-links li.right-arrow, ul.paginate-links li.left-arrow{
+    border: none;
   }
 </style>
