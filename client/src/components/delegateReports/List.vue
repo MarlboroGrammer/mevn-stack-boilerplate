@@ -29,7 +29,7 @@
     </table>
     </paginate>
     <div class="text-center">
-      <paginate-links for="reports" :show-step-links="true"></paginate-links>
+      <paginate-links for="reports" :show-step-links="true" v-if="reports.length > 0"></paginate-links>
     </div>
   </div>
 </template>
@@ -66,12 +66,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  ul.paginate-links{
+    ul.paginate-links{
     font-family: CamptonBold;
     font-size: 18px;
+    display: inline-flex;
+    list-style: none;
+    cursor: pointer;
   }
   ul.paginate-links li{
-    cursor: pointer;
     text-align: center;
     display: inline;
     margin: 10px;

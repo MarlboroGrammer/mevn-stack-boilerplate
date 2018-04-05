@@ -29,7 +29,7 @@
     </div>
     <div class="col-md-2">
       <label for="report-to">To</label>
-      <datepicker name="report-to" v-model="dateToFilter" :input-class="'form-control'" ></datepicker>
+      <datepicker name="report-to" v-model="dateToFilter" :input-class="'form-control'" :disabled="{to: dateFromFilter }" ></datepicker>
     </div>
     <div class="col-md-2">
       <br>
@@ -40,7 +40,7 @@
     <paginate ref="paginator"
         name="reports"
         :list="reports"
-        :per="2"
+        :per="10"
         >
       <span class="text-center" v-if="reports.length === 0">
         <div class="alert alert-warning">No records found</div>
@@ -190,7 +190,7 @@ export default {
     margin-top: 24px
   }
   ul.paginate-links{
-    font-family: CamptonBold;
+    font-family: 'CamptonBold';
     font-size: 18px;
     display: inline-flex;
     list-style: none;
