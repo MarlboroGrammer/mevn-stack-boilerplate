@@ -5,8 +5,8 @@
   <table id="example"  class="table table-striped" style="width:100%">
         <thead>
             <tr>
-               <th> # </th>
-               <th>Text</th>
+                <th> # </th>
+                <th>Text</th>
                 <th>Start-Date</th>
                 <th>End-Date</th>
                 <th>Status</th>
@@ -21,15 +21,26 @@
                 <input v-if="update" v-model="item.text" class="form-control">  </input>
                 <span v-else>  {{item.text}}  </span>
                 <td>
-                  <input type="date" v-if="update" v-model="item.start_date" class="form-control">  </input>
-                 <span v-else>  {{ item.start_date }}  </span>
+                  <input type="datetime-local" v-if="update" v-model="item.start_date" class="form-control">  </input>
+                 <span v-else>  {{ item.start_date|date("m/d/Y") }}  </span>
                 </td>
                 <td>
-                  <input type="date" v-if="update" v-model="item.end_date" class="form-control">  </input>
-                 <span v-else>  {{ item.end_date }}  </span>
+                  <input type="datetime-local" v-if="update" v-model="item.end_date" class="form-control">  </input>
+                 <span v-else>  {{ item.end_date|date("m/d/Y") }}  </span>
                 </td>
-                <td>{{ item.status }}</td>
-                <td> {{ item.visitType}} </td>
+                <td>
+                <input type="text" v-if="update" v-model="item.status" class="form-control">  </input>
+                 <span v-else>  {{ item.status }}  </span>
+                 </td>
+                <td> 
+                 <select v-if="update" class="form-control" v-model="item.visitType">
+                    <option disabled value="">Choisissez</option>
+                    <option>Pharmacist</option>
+                    <option>Doctor</option>
+                    <option>Wholesaler</option>
+                    </select>
+                <span v-else>  {{ item.visitType}} </span>
+                </td>
                 <td>
                 <div v-if="!update"  class="btn-group">
                 <button @click="modifyToogle()" class="btn btn-primary">Modify</button>
@@ -63,7 +74,7 @@ export default {
     }
   },
   methods: {
-      DeleteVisits  (item) {
+      DeleteVisits (item) {
        this.$dialog.confirm('Confirm delete ?')
         .then(function () {
          const response = VisitService.deleteVisits(item)
@@ -71,7 +82,6 @@ export default {
          this.visits.splice(index, 1)
           })
         .catch(function () {
-        
     });
      
      
@@ -92,6 +102,7 @@ export default {
     {
        this.$router.push({name: 'Visits'})
     }
+
   },
   mounted () {
     const response = VisitService.getVisits()
@@ -102,8 +113,9 @@ export default {
       this.errors.push(e)     
     })
     },
-   beforeCreate: function () {
-     $('#example').DataTable();
+  updated : function()
+  {
+   $('#example').DataTable();
   }
 }
 </script>

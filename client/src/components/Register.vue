@@ -28,7 +28,7 @@ export default {
   methods: {
     async register () {
       const response = await AuthenticationService.register({
-        email: this.email,
+        username: this.email,
         password: this.password
       })
       console.log(response)

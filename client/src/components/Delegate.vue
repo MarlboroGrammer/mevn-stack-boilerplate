@@ -55,6 +55,9 @@
         <li>
           <a data-toggle="tab" href="#calendar">Calendar</a>
         </li>
+         <li>
+          <a data-toggle="tab" href="#visits">Visits</a>
+        </li>
         <li>
           <a data-toggle="tab" href="#inbox">Presentations</a>
         </li>
@@ -65,7 +68,9 @@
 
       <div class="tab-content">
         <div id="activity" class="tab-pane fade in active">
-          <register></register>
+        </div>
+         <div id="visits" class="tab-pane fade in active">
+          <VisitAdmin></VisitAdmin>
         </div>
         <div id="reports" class="tab-pane fade">
           <h3>Menu 1</h3>
@@ -301,13 +306,15 @@
 
 <script>
 import Register from './Register'
+import VisitAdmin from './VisitsAdmin'
 const d3 = require('d3')
 const topojson = require('topojson')
 
 export default {
   name: 'Delegate',
   components: {
-    'register': Register
+    'register': Register,
+    'VisitAdmin': VisitAdmin
   },
   data () {
     return {
