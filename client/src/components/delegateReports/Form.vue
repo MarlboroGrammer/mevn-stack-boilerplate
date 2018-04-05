@@ -384,7 +384,6 @@
 
 <script>
 /* eslint-disable */
-
 import ReportsService from '@/services/ReportsService'
 import DelegatesService from '@/services/DelegatesService'
 import ProductsService from '@/services/ProductsService'
@@ -412,6 +411,28 @@ export default {
     }
   },
   methods: {
+    showSuccessModel () {
+      this.$modal.show('dialog', {
+        title: 'Success',
+        text: 'Report successfully sent',
+        buttons: [
+          {
+            title: 'Close', handler: () => { this.$parent.loadListComponent() }
+          }
+       ]
+      })
+    },
+    showErrorModel () {
+      this.$modal.show('dialog', {
+        title: 'Error',
+        text: 'Could not send report, please try again later',
+        buttons: [
+          {
+            title: 'Close'
+          }
+       ]
+      })
+    },
     async submitForm (event) {
       event.preventDefault()
       var pharmacy = $('#pharmacy-form').serializeArray()
@@ -428,25 +449,9 @@ export default {
       try {
         const response = await ReportsService.addReport(pharmacyObject)
         console.log(response)
-        this.$modal.show('dialog', {
-          title: 'Success',
-          text: 'Report successfully sent',
-          buttons: [
-            {
-              title: 'Close'
-            }
-         ]
-        })
+        this.showSuccessModel()
       } catch (err) {
-        this.$modal.show('dialog', {
-          title: 'Error',
-          text: 'Could not send report, please try again later',
-          buttons: [
-            {
-              title: 'Close'
-            }
-         ]
-        })
+        this.showErrorModel()
       }
     },
     async submitFormWholesaler (event) {
@@ -465,25 +470,9 @@ export default {
       try {
         const response = await ReportsService.addReport(wholeSalerObject)
         console.log(response)
-        this.$modal.show('dialog', {
-          title: 'Success',
-          text: 'Report successfully sent',
-          buttons: [
-            {
-              title: 'Close'
-            }
-         ]
-        })
+        this.showSuccessModel()
       } catch (err) {
-        this.$modal.show('dialog', {
-          title: 'Error',
-          text: 'Could not send report, please try again later',
-          buttons: [
-            {
-              title: 'Close'
-            }
-         ]
-        })
+        this.showErrorModel()
       }
     },
     async submitFormHospital (event) {
@@ -502,25 +491,9 @@ export default {
       try {
         const response = await ReportsService.addReport(hospitalObject)
         console.log(response)
-        this.$modal.show('dialog', {
-          title: 'Success',
-          text: 'Report successfully sent',
-          buttons: [
-            {
-              title: 'Close'
-            }
-         ]
-        })
+        this.showSuccessModel()
       } catch (err) {
-        this.$modal.show('dialog', {
-          title: 'Error',
-          text: 'Could not send report, please try again later',
-          buttons: [
-            {
-              title: 'Close'
-            }
-         ]
-        })
+        this.showErrorModel()
       }
     },
     async submitFormClinic (event) {
@@ -539,25 +512,9 @@ export default {
       try {
         const response = await ReportsService.addReport(clinicObject)
         console.log(response)
-        this.$modal.show('dialog', {
-          title: 'Success',
-          text: 'Report successfully sent',
-          buttons: [
-            {
-              title: 'Close'
-            }
-         ]
-        })
+        this.showSuccessModel()
       } catch (err) {
-        this.$modal.show('dialog', {
-          title: 'Error',
-          text: 'Could not send report, please try again later',
-          buttons: [
-            {
-              title: 'Close'
-            }
-         ]
-        })
+        this.showErrorModel()
       }
     },
     async submitFormDoctor (event) {
@@ -576,25 +533,9 @@ export default {
       try {
         const response = await ReportsService.addReport(doctorObject)
         console.log(response)
-        this.$modal.show('dialog', {
-          title: 'Success',
-          text: 'Report successfully sent',
-          buttons: [
-            {
-              title: 'Close'
-            }
-         ]
-        })
+        this.showSuccessModel()
       } catch (err) {
-        this.$modal.show('dialog', {
-          title: 'Error',
-          text: 'Could not send report, please try again later',
-          buttons: [
-            {
-              title: 'Close'
-            }
-         ]
-        })
+        this.showErrorModel()
       }
     },
     addPotentialProduct (event) {

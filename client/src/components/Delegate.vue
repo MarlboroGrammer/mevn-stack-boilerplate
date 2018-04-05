@@ -46,9 +46,6 @@
 
       <ul class="nav nav-tabs">
         <li class="active">
-          <a data-toggle="tab" href="#activity">Activity</a>
-        </li>
-        <li>
           <a data-toggle="tab" href="#reports">Reports</a>
         </li>
         <li>
@@ -63,9 +60,7 @@
       </ul>
 
       <div class="tab-content">
-        <div id="activity" class="tab-pane fade in active">
-        </div>
-        <div id="reports" class="tab-pane fade">
+        <div id="reports" class="tab-pane fade in active">
           <h2>Reports Management</h2>
           <div class="row">
             <div class="col-md-12">
@@ -347,4 +342,12 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .main-panel .nav-tabs li a {
+    margin-left: 5px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    padding-left: 150px;
+    padding-right: 154px;
+  }
 </style>
