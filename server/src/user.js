@@ -12,7 +12,8 @@ function jwtSignUser (username) {
 router.post('/register', function (req, res) {
   var credentialsObj = new Credentials({
     username: req.body.username,
-    password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
+    password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
+    role: req.body.role
   })
   credentialsObj.save(function (err, result) {
     if (err) {
@@ -38,7 +39,7 @@ router.post('/authenticate', function (req, res) {
       if (bcrypt.compareSync(req.body.password, data.password)) {
         console.log('Our username is: ', req.body.username)
         var token = jwtSignUser(req.body.username)
-        console.log('Fuck!', token)
+        console.log('Authentified user is:', data)
         res.send({
           signedUser: data,
           userToken: token

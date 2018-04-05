@@ -38,6 +38,7 @@ export default new Vuex.Store({
       state.user = null
       state.token = null
       state.userLogged = false
+      state.delegate = null
     }
   },
   getters: {

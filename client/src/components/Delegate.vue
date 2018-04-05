@@ -337,6 +337,11 @@ export default {
     }
   },
   mounted: function () {
+  },
+  beforeCreate: function () {
+    if (this.$store.getters.isLoggedIn === false || this.$store.getters.getUser.role !== 'Delegate') {
+      this.$router.push({name: 'Login'})
+    }
   }
 }
 </script>

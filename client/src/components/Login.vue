@@ -59,7 +59,11 @@ export default {
         DelegatesService.getDelegate(response.data.signedUser._id).then(res => {
           this.$store.dispatch('setDelegate', res.data._id)
         })
-        this.$router.push({name: 'Delegate'})
+        if (this.$store.getters.getUser.role === 'Delegate') {
+          this.$router.push({name: 'Delegate'})
+        } else if (this.$store.getters.getUser.role === 'Admin') {
+          this.$router.push({name: 'Admin'})
+        }
         console.log(response.data)
       } catch (error) {
         console.log(error)
@@ -69,7 +73,11 @@ export default {
   },
   beforeCreate: function () {
     if (this.$store.getters.isLoggedIn === true) {
-      this.$router.push({name: 'Delegate'})
+      if (this.$store.getters.getUser.role === 'Delegate') {
+        this.$router.push({name: 'Delegate'})
+      } else if (this.$store.getters.getUser.role === 'Admin') {
+        this.$router.push({name: 'Admin'})
+      }
     }
   }
 }
