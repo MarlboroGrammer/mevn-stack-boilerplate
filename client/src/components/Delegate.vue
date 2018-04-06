@@ -56,7 +56,7 @@
           <a data-toggle="tab" href="#calendar">Calendar</a>
         </li>
         <li>
-          <a data-toggle="tab" href="#map">Map</a>
+          <a data-toggle="tab" href="#myMap">Ma Carte</a>
         </li>
           <li>
           <a data-toggle="tab" href="#client">Clintelle</a>
@@ -73,8 +73,8 @@
          <div id="client" class="tab-pane fade in active">
           <client></client>
         </div>
-        <div id="map" class="tab-pane fade in active">
-          <map></map>
+        <div id="myMap" class="tab-pane fade in active">
+          <myMap></myMap>
         </div>
         <div id="reports" class="tab-pane fade">
           <h3>Menu 1</h3>
@@ -313,7 +313,7 @@ import Register from './Register'
 
 import Client from './listClient'
 
-import map from './map'
+import myMap from './map'
 
 const d3 = require('d3')
 const topojson = require('topojson')
@@ -323,7 +323,7 @@ export default {
   components: {
     'register': Register,
     'client' : Client,
-    'map' : map
+    'myMap' : myMap
   },
   data () {
     return {

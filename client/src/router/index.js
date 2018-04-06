@@ -33,8 +33,8 @@ export default new Router({
       component: Register
     },
     {
-      path: '/map',
-      name: 'map',
+      path: '/myMap',
+      name: 'myMap',
       component: map
     },
     {
