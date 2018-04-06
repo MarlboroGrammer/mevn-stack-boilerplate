@@ -6,8 +6,10 @@ import App from './App'
 import router from './router'
 import sync from 'vuex-router-sync'
 import store from '@/store/store'
+import VuejsDialog from "vuejs-dialog"
 
 Vue.config.productionTip = false
+Vue.use(VuejsDialog)
 
 /* eslint-disable no-new */
 new Vue({

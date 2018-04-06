@@ -9,6 +9,19 @@ function jwtSignUser (username) {
   return jwt.sign(username, 'secret', null)
 }
 
+router.get('/credentials', function (req, res) {
+  Credentials.find({}, function (err, result) {
+    if (err) {
+      res.send(err)
+    }
+    if (!result) {
+      res.status(404).send()
+    } else {
+      res.json(result)
+    }
+  })
+})
+
 router.post('/register', function (req, res) {
   var credentialsObj = new Credentials({
     username: req.body.username,

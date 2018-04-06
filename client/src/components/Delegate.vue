@@ -59,6 +59,9 @@
           <a data-toggle="tab" href="#inbox">Presentations</a>
         </li>
         <li>
+          <a data-toggle="tab" href="#products">Products</a>
+        </li>
+        <li>
           <a data-toggle="tab" href="#overview">Overview</a>
         </li>
       </ul>
@@ -92,6 +95,9 @@
           <div class="row" id="slides" style="overflow-y: scroll; max-height: 500px;">
 
           </div>
+        </div>
+        <div id="products" class="tab-pane fade">
+          <Products></Products>
         </div>
         <div id="overview" class="tab-pane fade">
         <h2><strong>Account overview</strong></h2>
@@ -301,13 +307,15 @@
 
 <script>
 import Register from './Register'
+import Products from './Products'
 const d3 = require('d3')
 const topojson = require('topojson')
 
 export default {
   name: 'Delegate',
   components: {
-    'register': Register
+    'register': Register,
+    'Products': Products
   },
   data () {
     return {
