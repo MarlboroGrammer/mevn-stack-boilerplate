@@ -14,8 +14,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@types/dhtmlxscheduler": "^4.3.36",
     "axios": "^0.18.0",
     "d3": "^5.0.0",
+    "dhtmlx-scheduler": "^4.4.0",
     "topojson": "^3.0.2",
     "vue": "^2.5.2",
     "vue-google-autocomplete": "^1.1.0",

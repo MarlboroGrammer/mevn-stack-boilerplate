@@ -10,9 +10,11 @@ import Notifications from 'vue-notification'
 import VuejsDialog from "vuejs-dialog"
 
 
+
 Vue.config.productionTip = false
 Vue.use(Notifications)
 Vue.use(VuejsDialog)
+
 
 
 /* eslint-disable no-new */

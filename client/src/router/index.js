@@ -5,6 +5,7 @@ import Register from '@/components/Register'
 import Delegate from '@/components/Delegate'
 import Visits from '@/components/Visit'
 import VisitsAdmin from '@/components/VisitsAdmin'
+import Calendar from '@/components/Calendar'
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
       path: '/VisitsAdmin',
       name: 'VisitsAdmin',
       component: VisitsAdmin
-    }
+    },
+     {
+      path: '/Calendar',
+      name: 'Calendar',
+      component: Calendar
+    },
   ]
 })

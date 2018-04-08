@@ -2,6 +2,7 @@
   <div id="app">
     <router-view/>
     <notifications group="foo" position="bottom right" />
+    
   </div>
 </template>
 
@@ -12,5 +13,6 @@ export default {
 </script>
 
 <style>
-  @import 'assets/css/application.css'
+  @import 'assets/css/application.css';
+  @import 'assets/codebase/dhtmlxscheduler.css';
 </style>

@@ -46,7 +46,7 @@
                 <span v-else>  {{ item.visitType}} </span>
                 </td>
                   <td> 
-                <input type="text" v-if="update" v-model="item.adresse" class="form-control">  </input>
+                <input type="text" v-if="update" v-model="item.Adresse" class="form-control">  </input>
                 <span v-else>  {{ item.Adresse}} </span>
                 </td>
                 <td>

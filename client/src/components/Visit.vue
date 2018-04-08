@@ -7,7 +7,7 @@
       <textarea v-model="text" class="form-control" placeholder="Write here"></textarea>
     </div>
     <div class="form-group">
-    <label> Adresse </label>
+    <label> Address </label>
      <vue-google-autocomplete :country="['tn']"
             ref="address"
             id="map"
