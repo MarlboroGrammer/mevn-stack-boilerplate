@@ -1,10 +1,13 @@
 var mongoose = require('mongoose')
 
 var visitScheme = new mongoose.Schema({
-  at: Date,
-  objectif: String,
+  start_date: Date,
+  end_date: Date,
+  text: String,
+  id: Number,
+  Adresse: String,
   status: {type: String, enum: ['Done', 'Not done']},
   visitType: {type: String, enum: ['Pharmacist', 'Doctor', 'Wholesaler']}
 }, { collection: 'visit' })
 
-module.exports = mongoose.model('visit', visitScheme)
+module.exports.visit = mongoose.model('EvenT', visitScheme)

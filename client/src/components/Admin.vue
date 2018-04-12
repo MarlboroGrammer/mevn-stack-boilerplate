@@ -52,7 +52,7 @@
           <a data-toggle="tab" href="#reports">Reports</a>
         </li>
         <li>
-          <a data-toggle="tab" href="#calendar">Calendar</a>
+          <a data-toggle="tab" href="#visits">Visits</a>
         </li>
         <li>
           <a data-toggle="tab" href="#inbox">Presentations</a>
@@ -72,9 +72,8 @@
           </div>
         </div>
 
-        <div id="calendar" class="tab-pane fade">
-          <h3>Menu 2</h3>
-          <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.  </p>
+        <div id="visits" class="tab-pane fade">
+          <visit-admin></visit-admin>
         </div>
         <div id="inbox" class="tab-pane fade">
           <div class="row">
@@ -106,12 +105,14 @@
 import AdminList from '@/components/adminReports/List'
 import AdminReport from '@/components/adminReports/Report'
 import Charts from '@/components/adminCharts/Charts'
+import VisitAdmin from '@/components/VisitsAdmin'
 
 export default {
   name: 'Admin',
   components: {
     'list': AdminList,
-    'charts': Charts
+    'charts': Charts,
+    'visit-admin': VisitAdmin
   },
   data () {
     return {

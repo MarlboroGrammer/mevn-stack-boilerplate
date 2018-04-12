@@ -72,8 +72,7 @@
         </div>
 
         <div id="calendar" class="tab-pane fade">
-          <h3>Menu 2</h3>
-          <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.  </p>
+          <Calendar></Calendar>
         </div>
         <div id="inbox" class="tab-pane fade">
           <div class="row">
@@ -302,12 +301,14 @@
 /* eslint-disable no-return-assign */
 import ListReports from '@/components/delegateReports/List'
 import FormReports from '@/components/delegateReports/Form'
+import Calendar from '@/components/Calendar'
 
 export default {
   name: 'Delegate',
   components: {
     'list': ListReports,
-    'form': FormReports
+    'form': FormReports,
+    'Calendar': Calendar
   },
   data () {
     return {

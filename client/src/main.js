@@ -9,11 +9,15 @@ import store from '@/store/store'
 import DateFilter from '@/filters/datefilter'
 import VModal from 'vue-js-modal'
 import VuePaginate from 'vue-paginate'
+import VuejsDialog from "vuejs-dialog"
+import Notifications from 'vue-notification'
 
 Vue.config.productionTip = false
 
 Vue.use(VModal, { dialog: true })
 Vue.use(VuePaginate)
+Vue.use(Notifications)
+Vue.use(VuejsDialog)
 
 /* eslint-disable no-new */
 new Vue({

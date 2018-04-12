@@ -1,5 +1,4 @@
 var mongoose = require('mongoose')
-var visit = require('./visit.js')
 
 var delegateSchema = new mongoose.Schema({
   name: String,
@@ -13,7 +12,6 @@ var delegateSchema = new mongoose.Schema({
   area: String,
   target: {type: String, enum: ['Pharmacist', 'Doctor', 'Wholesaler', 'Hospital', 'Clinic']},
   cycle: Number,
-  visit: [visit.schema],
   credentials: {type: mongoose.Schema.ObjectId, ref: 'credentials'}
 }, { collection: 'delegate' })
 
