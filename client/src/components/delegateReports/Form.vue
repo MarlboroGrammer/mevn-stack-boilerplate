@@ -17,7 +17,7 @@
       <form name="pharmacy-form" id="pharmacy-form" method="POST">
         <div class="form-group">
           <label for="pharmacy-name">Pharmacy name</label>
-          <input type="text" name="pharmacyName" class="form-control" v-model="pharmacyName">
+          <input type="text" name="pharmacyName" class="form-control" v-model="pharmacyName" required>
         </div>
         <div class="form-group">
           <label for="visit-objectif">Objectif de la visite</label>

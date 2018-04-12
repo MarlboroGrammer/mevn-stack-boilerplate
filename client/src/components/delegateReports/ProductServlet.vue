@@ -5,7 +5,7 @@
       <div class="col-md-5">
         Product name:
         <select class="form-control"
-        :name='name'>
+        :name='name' required>
           <option v-for="product in productsList" :value="product.name">{{product.name}}</option>
         </select>
       </div>

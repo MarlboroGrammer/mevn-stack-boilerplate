@@ -64,6 +64,7 @@
 
       <div class="tab-content">
         <div id="activity" class="tab-pane fade in active">
+          <charts></charts>
         </div>
         <div id="reports" class="tab-pane fade">
           <div class="row">
@@ -104,16 +105,18 @@
 /* eslint-disable no-return-assign */
 import AdminList from '@/components/adminReports/List'
 import AdminReport from '@/components/adminReports/Report'
+import Charts from '@/components/adminCharts/Charts'
 
 export default {
   name: 'Admin',
   components: {
     'list': AdminList,
-    reportToApproveID: ''
+    'charts': Charts
   },
   data () {
     return {
-      currentComponent: AdminList
+      currentComponent: AdminList,
+      reportToApproveID: ''
     }
   },
   methods: {

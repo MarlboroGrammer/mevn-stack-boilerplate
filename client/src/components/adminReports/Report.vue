@@ -226,8 +226,8 @@ export default {
     async reject () {
       console.log('About to reject report')
       try {
-        const response = await ReportsService.finalize(report._id, 'reject')
-        console.log(response)
+        const response = await ReportsService.finalize(this.report._id, 'reject')
+        this.goBack()
       } catch (err) {
         this.$modal.show('dialog', {
           title: 'Error',
@@ -239,7 +239,6 @@ export default {
          ]
         })
       }
-      this.goBack()
     }
   },
   mounted: function () {

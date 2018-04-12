@@ -1,3 +1,1 @@
-start cmd.exe /C cd client && npm start
-start cmd.exe /C cd server && npm start
-mongod
+cd client && start npm start && cd ../server && start npm start && mongod
