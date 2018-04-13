@@ -7,6 +7,8 @@ import Admin from '@/components/Admin'
 import Visits from '@/components/Visit'
 import VisitsAdmin from '@/components/VisitsAdmin'
 import Calendar from '@/components/Calendar'
+import Products from '@/components/Products'
+import ProductsAjout from '@/components/ProductsAjout'
 
 Vue.use(Router)
 
@@ -47,6 +49,16 @@ export default new Router({
       path: '/Calendar',
       name: 'Calendar',
       component: Calendar
+    },
+    {
+      path: '/Products',
+      name: 'Products',
+      component: Products
+    },
+    {
+      path: '/ProductsAjout',
+      name: 'ProductsAjout',
+      component: ProductsAjout
     }
   ]
 })

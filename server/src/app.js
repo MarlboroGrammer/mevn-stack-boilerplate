@@ -5,9 +5,10 @@ const morgan = require('morgan')
 const db = require('./config/connection')
 const user = require('./user')
 const visit = require('./APIvisit')
+const product = require('./APIproduct')
 const reports = require('./reports')
 const delegates = require('./delegates.js')
-const products = require('./products.js')
+
 const app = express()
 const config = require('./config/parameters')
 
@@ -17,7 +18,7 @@ app.use(cors())
 app.use('/users', user)
 app.use('/reports', reports)
 app.use('/delegates', delegates)
-app.use('/products', products)
+app.use('/products', product)
 app.use('/visits', visit)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

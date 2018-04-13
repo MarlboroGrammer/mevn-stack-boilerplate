@@ -60,6 +60,9 @@
         <li>
           <a data-toggle="tab" href="#overview">Overview</a>
         </li>
+        <li>
+          <a data-toggle="tab" href="#products">Products</a>
+        </li>
       </ul>
 
       <div class="tab-content">
@@ -93,7 +96,10 @@
           </div>
         </div>
         <div id="overview" class="tab-pane fade">
-        <h2><strong>Account overview</strong></h2>
+          <h2><strong>Account overview</strong></h2>
+        </div>
+        <div id="products" class="tab-pane fade">
+          <Products></Products>
         </div>
       </div>
     </div>
@@ -106,13 +112,15 @@ import AdminList from '@/components/adminReports/List'
 import AdminReport from '@/components/adminReports/Report'
 import Charts from '@/components/adminCharts/Charts'
 import VisitAdmin from '@/components/VisitsAdmin'
+import Products from '@/components/Products'
 
 export default {
   name: 'Admin',
   components: {
     'list': AdminList,
     'charts': Charts,
-    'visit-admin': VisitAdmin
+    'visit-admin': VisitAdmin,
+    'Products': Products
   },
   data () {
     return {
@@ -144,5 +152,26 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  /* Credits to https://bootsnipp.com/dotstrap for this stylish search bar */
+  .main-panel .nav-tabs li a {
+    margin-left: 5px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    padding-left: 88px;
+    padding-right: 101px;
+  }
+
+  @media only screen
+  and (min-device-width : 768px)
+  and (max-device-width : 1024px)
+  and (orientation : landscape){
+    .main-panel .nav-tabs li a {
+      margin-left: 5px;
+      line-height: 1.42857143;
+      border: 1px solid transparent;
+      border-radius: 4px 4px 0 0;
+      padding-left: 50px;
+      padding-right: 56px;
+    }
+  }
 </style>
