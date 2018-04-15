@@ -112,7 +112,7 @@ router.post('/add', function (req, res, next) {
     if (err) {
       res.send(err)
     }
-    if(ReportObj.order !== undefined) {
+    if (ReportObj.order !== undefined) {
       SalesObj = new Sales({
         date: new Date(),
         amount: ReportObj.order.TotalEL,
@@ -123,7 +123,7 @@ router.post('/add', function (req, res, next) {
       SalesObj.save(function (err, res) {
         if (err) {
           res.send(err)
-        }  
+        }
       })
       console.log(SalesObj)
     }

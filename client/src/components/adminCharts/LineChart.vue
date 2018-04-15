@@ -1,12 +1,69 @@
 <!-- eslint-disable -->
 <template>
   <div>
-    <div class="col-md-10">
+    <div class="col-md-6">
       <vue-highcharts :options="lineChartOptions" ref="lineCharts"></vue-highcharts>
     </div>
-    <!--<div class="col-md-5">
-      <vue-highcharts :options="stackChartOptions"></vue-highcharts>
-    </div>-->
+    <div class="col-md-4">
+      <vue-highcharts :options="pieChartOptions" ref="pieChart"></vue-highcharts>
+    </div>
+    <div class="col-md-2">
+      <!-- gui fixture -->
+    </div>
+    <div class="col-md-6">
+      <h3>Most profitable sales date: 04/04/2018</h3>
+      <h4>Delegate: John Peterson</h4>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="panel">
+            <div class="panel-body red-panel">
+              <div class="row">
+                <div class="col-md-4">
+                  <i class="fa fa-tag"></i>
+                </div>
+                <div class="col-md-8">
+                  Amount Closed
+                  <h4>4522 DT</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="panel">
+            <div class="panel-body green-panel">
+              <div class="row">
+                <div class="col-md-4">
+                  <i class="fa fa-medkit"></i>
+                </div>
+                <div class="col-md-8">
+                  Most Sold Item
+                  <h4>Maxilase</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="panel">
+            <div class="panel-body blue-panel">
+              <div class="row">
+                <div class="col-md-4">
+                  <i class="fa fa-user"></i>
+                </div>
+                <div class="col-md-8">
+                  Client Potential
+                  <h4>B</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <vue-highcharts :options="drilldownOptions" ref="drilldownChart"></vue-highcharts>
+    </div>
   </div>
 </template>
 
@@ -15,7 +72,11 @@
 import VueHighcharts from 'vue2-highcharts'
 import Highcharts from 'highcharts'
 import SalesService from '@/services/SalesService'
+import Drilldown from '../../../node_modules/highcharts/modules/drilldown.js'
 
+function millimesToDT (millimes) {
+  return millimes / 1000;
+}
 function getMonthFromISODate (date) {
   let retDate = date.toISOString().slice(0,10).split('-')[1]
   switch (retDate) {
@@ -54,8 +115,7 @@ function getMonthFromISODate (date) {
       break
     case '12':
       return 'Dec'
-      break
-    
+      break   
   }
 }
 async function getSales (){
@@ -67,21 +127,25 @@ async function getSales (){
   }
 }
 
-getSales().then(data => {
-  console.log(data.map(s => getMonthFromISODate(new Date(s.date))))
-})
-const asyncData = {
-  name: 'Tokyo',
-  marker: {
-    symbol: 'square'
-  },
-  data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, {
-    y: 26.5,
-    marker: {
-      symbol: 'url(http://www.highcharts.com/demo/gfx/sun.png)'
-    }
-  }, 23.3, 18.3, 13.9, 9.6]
+function getYearlyArray () {
+  let retArr = []
+  
+  retArr['Jan'] = 0
+  retArr['Feb'] = 0
+  retArr['Mar'] = 0
+  retArr['Apr'] = 0
+  retArr['May'] = 0
+  retArr['Jun'] = 0
+  retArr['Jul'] = 0
+  retArr['Aug'] = 0
+  retArr['Sep'] = 0
+  retArr['Oct'] = 0
+  retArr['Nov'] = 0
+  retArr['Dec'] = 0
+
+  return retArr
 }
+
 export default{
     components: {
         VueHighcharts
@@ -93,10 +157,7 @@ export default{
             type: 'spline'
           },
           title: {
-            text: 'Monthly Average Temperature'
-          },
-          subtitle: {
-            text: 'Source: WorldClimate.com'
+            text: 'Overall sales chart'
           },
           xAxis: {
             categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -104,12 +165,7 @@ export default{
           },
           yAxis: {
             title: {
-              text: 'Temperature'
-            },
-            labels: {
-              formatter: function () {
-                return this.value + '°';
-              }
+              text: 'DT'
             }
           },
           tooltip: {
@@ -128,14 +184,134 @@ export default{
               }
             }
           },
-          series: [asyncData]
+          series: []
+        },
+        pieChartOptions: {
+          chart: {
+              type: 'pie',
+              options3d: {
+                  enabled: true,
+                  alpha: 45
+              }
+          },
+          title: {
+              text: 'Sales distribution'
+          },
+          plotOptions: {
+              pie: {
+                  innerSize: 100,
+                  depth: 45
+              }
+          },
+          series: []
+        },
+        drilldownOptions: {
+          chart: {
+            type: 'column'
+          },
+          title: {
+            text: 'Basic drilldown'
+          },
+          xAxis: {
+            type: 'category'
+          },
+          legend: {
+            enabled: false
+          },
+          plotOptions: {
+            series: {
+              borderWidth: 0,
+              dataLabels: {
+                enabled: true
+              }
+            }
+          },
+          series: [{
+            name: 'Things',
+            colorByPoint: true,
+            data: [{
+              name: 'Animals',
+              y: 5
+            }, {
+              name: 'Fruits',
+              y: 2
+            }, {
+              name: 'Cars',
+              y: 4
+            }]
+          }]
         }
       }
     },
     methods: {
-      mounted: function () {
+      load () {
+        console.log('Mounted!')
+        getSales().then(data => {
+          console.log('One boi:', data[0])
+          let wholesalerDataArray = getYearlyArray()
+          let pharmacyDataArray = getYearlyArray()
 
+          let pharmacyData = data.filter(x => x.type === 'Pharmacy')
+          let wholesalerData = data.filter(x => x.type === 'Wholesaler')
+          
+          wholesalerData.forEach(s => {
+            let month = getMonthFromISODate(new Date(s.date))
+            wholesalerDataArray[month] += millimesToDT(s.amount)
+          })
+
+          pharmacyData.forEach(s => {
+            let month = getMonthFromISODate(new Date(s.date))
+            pharmacyDataArray[month] += millimesToDT(s.amount)
+          })
+
+          let asyncWholesalersData = {
+            name: 'Wholesalers Sales',
+            marker: {
+              symbol: 'square'
+            },
+            data: [wholesalerDataArray['Jan'], wholesalerDataArray['Feb'], wholesalerDataArray['Mar'], 
+            wholesalerDataArray['Apr'], wholesalerDataArray['May'], wholesalerDataArray['Jun'], 
+            wholesalerDataArray['Jul'],wholesalerDataArray['Aug'], wholesalerDataArray['Sep'], 
+            wholesalerDataArray['Oct'], wholesalerDataArray['Nov'], wholesalerDataArray['Dec']]
+          }
+
+          let asyncPharmacyData = {
+            name: 'Pharmacies Sales',
+            marker: {
+              symbol: 'square'
+            },
+            data: [pharmacyDataArray['Jan'], pharmacyDataArray['Feb'], pharmacyDataArray['Mar'], 
+            pharmacyDataArray['Apr'], pharmacyDataArray['May'], pharmacyDataArray['Jun'], 
+            pharmacyDataArray['Jul'],pharmacyDataArray['Aug'], pharmacyDataArray['Sep'], 
+            pharmacyDataArray['Oct'], pharmacyDataArray['Nov'], pharmacyDataArray['Dec']]
+          }
+
+          let lineCharts = this.$refs.lineCharts
+          lineCharts.delegateMethod('showLoading', 'Loading...')
+          setTimeout(() => {
+              lineCharts.addSeries(asyncWholesalersData)
+              lineCharts.addSeries(asyncPharmacyData)
+              lineCharts.hideLoading()
+          }, 2000)
+
+          let asyncPiechartData = {
+              name: 'Amount',
+              data: [
+                  ['Pharmacies', millimesToDT(pharmacyData.map(p => p.amount).reduce((a, b) => a + b))],
+                  ['Wholesalers', millimesToDT(wholesalerData.map(p => p.amount).reduce((a, b) => a + b))] 
+              ]
+          }
+          let pieChart = this.$refs.pieChart
+          pieChart.delegateMethod('showLoading', 'Loading...')
+          setTimeout(() => {
+              pieChart.addSeries(asyncPiechartData)
+              pieChart.hideLoading()
+          }, 2000)
+        })
       } 
+    },
+    mounted: function () {
+      this.load()
     }
 }
 </script>
@@ -144,5 +320,29 @@ export default{
   .charts-links{
     text-decoration: none;
     list-style: none;
+  }
+  .panel i{
+    font-size: 55px;
+  }
+  .red-panel{
+    background-color: #fc8675;
+    color: white;
+    border-radius: 2%;
+  }
+
+ .green-panel{
+    background-color: rgb(54, 169, 206);
+    color: white;
+    border-radius: 2%;
+  }
+ .blue-panel{
+    background-color: rgb(129, 206, 74);
+    color: white;
+    border-radius: 2%;
+  }
+ .navy-panel{
+    background-color: rgb(1, 3, 38);
+    color: white;
+    border-radius: 2%;
   }
 </style>
