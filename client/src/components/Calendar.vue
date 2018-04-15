@@ -139,13 +139,67 @@ export default {
         scheduler.deleteEvent(id);
          return true;
 
-         scheduler.attachEvent("onLightboxButton", function(button_id, node, e){
+       
+      });
+
+        scheduler.attachEvent("onLightboxButton", function(button_id, node, e){
            console.log(button_id)
          if(button_id == "report_button"){
-        console.log("report")
+        alert("report")
     }
       });
-      });
+    
+
+          for (var i=0;i<this.events.length;i++)
+        {
+        if (this.events[i].start_date.toISOString().slice(0, 10)== new Date().toISOString().slice(0, 10))
+        {
+          
+          //pharma Notif
+          if (this.events[i].visitType=="Pharmacist")
+          {
+           this.$notify({
+          group: 'foo',
+          title: 'Pharmakeys Notification',
+          text:  this.events[i].text +" :"+ 
+         " " + this.events[i].start_date,
+          duration: 8000,
+          type: 'success'
+          });
+          }
+
+          //Doctor Notif
+            if (this.events[i].visitType=="Doctor")
+          {
+           this.$notify({
+          group: 'foo',
+          title: 'Pharmakeys Notification',
+          text:  this.events[i].text +" : "+ 
+         "" + this.events[i].start_date,
+          duration: 8000,
+          type: 'error'
+          });
+          }
+        //Wholesaler Notif
+          if (this.events[i].visitType=="Wholesaler")
+          {
+           this.$notify({
+          group: 'foo',
+          title: 'Pharmakeys Notification',
+         text:  this.events[i].text +" :"+ 
+         " " + this.events[i].start_date,
+          duration: 8000,
+         type: 'warn'
+          });
+          } 
+       
+          
+        }
+        
+       
+       
+        
+        }
    
     })
     .catch(e => {
