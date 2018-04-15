@@ -67,7 +67,23 @@
 
       <div class="tab-content">
         <div id="activity" class="tab-pane fade in active">
-          <charts></charts>
+          <div class="row">
+            <div class="col-md-2">
+              <div class="panel panel-body">
+                <ul class="charts-links">
+                  <li>
+                    <button @click="loadChart('Stacked')">Stacked Chart</button>
+                    <hr>
+                  </li>
+                  <li>
+                    <button @click="loadChart('Line')">Line Chart</button>
+                    <hr>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div :is="currentChart"></div>
+          </div>
         </div>
         <div id="reports" class="tab-pane fade">
           <div class="row">
@@ -110,7 +126,8 @@
 /* eslint-disable no-return-assign */
 import AdminList from '@/components/adminReports/List'
 import AdminReport from '@/components/adminReports/Report'
-import Charts from '@/components/adminCharts/Charts'
+import LineChart from '@/components/adminCharts/LineChart'
+import StackedChart from '@/components/adminCharts/StackedChart'
 import VisitAdmin from '@/components/VisitsAdmin'
 import Products from '@/components/Products'
 
@@ -118,14 +135,14 @@ export default {
   name: 'Admin',
   components: {
     'list': AdminList,
-    'charts': Charts,
     'visit-admin': VisitAdmin,
     'Products': Products
   },
   data () {
     return {
       currentComponent: AdminList,
-      reportToApproveID: ''
+      reportToApproveID: '',
+      currentChart: LineChart
     }
   },
   methods: {
@@ -139,6 +156,15 @@ export default {
     },
     back () {
       this.currentComponent = AdminList
+    },
+    loadChart (selectedChart) {
+      switch (selectedChart) {
+        case 'Line':
+          this.currentChart = LineChart
+          break
+        case 'Stacked':
+          this.currentChart = StackedChart
+      }
     }
   },
   mounted: function () {
@@ -152,6 +178,10 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .charts-links{
+    text-decoration: none;
+    list-style: none;
+  }
   .main-panel .nav-tabs li a {
     margin-left: 5px;
     line-height: 1.42857143;

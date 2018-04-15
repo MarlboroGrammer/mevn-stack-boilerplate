@@ -444,6 +444,11 @@ export default {
         }
       );
       pharmacyObject.type = this.category
+      let total = 0
+      pharmacyObject.order.products.forEach(function (o) {
+        total += o.quantity * o.price
+      })
+      pharmacyObject.order.TotalEL = total
       pharmacyObject.delegate = this.$store.getters.getDelegate
       console.log(pharmacyObject)
       try {
@@ -465,6 +470,10 @@ export default {
         }
       )
       wholeSalerObject.type = this.category
+      let total = 0
+      pharmacyObject.order.products.forEach(function (o) {
+        total += o.quantity * o.price
+      })
       wholeSalerObject.delegate = this.$store.getters.getDelegate
       console.log(wholeSalerObject)
       try {

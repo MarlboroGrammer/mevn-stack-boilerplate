@@ -154,7 +154,7 @@ export default {
     line-height: 1.42857143;
     border: 1px solid transparent;
     border-radius: 4px 4px 0 0;
-    padding-left: 150px;
-    padding-right: 154px;
+    padding-left: 110px;
+    padding-right: 114px;
   }
 </style>

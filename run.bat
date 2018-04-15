@@ -1,1 +1,1 @@
-cd client && start npm run && cd ../server && start npm start && mongod
+cd client && start npm start && cd ../server && start npm start && mongod

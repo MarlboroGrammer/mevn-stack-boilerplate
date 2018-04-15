@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var Reports = require('./models/report')
+var Sales = require('./models/sales')
 
 router.get('/', function (req, res, next) {
   Reports.find({}).populate('delegate').exec(function (err, reports) {
@@ -37,6 +38,7 @@ router.get('/delegate/:delegateid', function (req, res, next) {
 
 router.post('/add', function (req, res, next) {
   let ReportObj = {}
+  let SalesObj = {}
   console.log('potentialProducts array that i got here is : ', req.body.potentialProducts)
   switch (req.body.type) {
     case 'Pharmacy':
@@ -109,6 +111,21 @@ router.post('/add', function (req, res, next) {
   ReportObj.save(function (err, result) {
     if (err) {
       res.send(err)
+    }
+    if(ReportObj.order !== undefined) {
+      SalesObj = new Sales({
+        date: new Date(),
+        amount: ReportObj.order.TotalEL,
+        delegate: ReportObj.delegate,
+        report: ReportObj._id
+      })
+
+      SalesObj.save(function (err, res) {
+        if (err) {
+          res.send(err)
+        }  
+      })
+      console.log(SalesObj)
     }
     res.json(ReportObj)
   })

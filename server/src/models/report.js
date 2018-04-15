@@ -26,7 +26,7 @@ var reportSchema = new mongoose.Schema({
   },
   order: {
     type: {type: String, enum: ['Pack gros 1', 'Pack gros 2', 'Pack gros 3', 'Regular']},
-    products: [{productName: String, quantity: Number}],
+    products: [{productName: String, quantity: Number, price: Number}],
     TotalEL: Number
   },
   potentialProducts: [
