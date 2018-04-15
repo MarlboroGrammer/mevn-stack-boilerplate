@@ -83,7 +83,7 @@ export default {
       this.$notify({
        group: 'foo',
        title: 'Pharmakeys Notification',
-      text: 'Visit saved in database',
+      text: 'Visit saved ',
       duration: 5000,
       type: 'success '
         });

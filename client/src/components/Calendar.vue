@@ -1,17 +1,23 @@
 <template>
-  <div class="container">
-    
+  <div>
+  
 
-     <div ref="scheduler_here" class="dhx_cal_container" style='width:100%; height:600px;'>
+  <div ref="scheduler_here" class="dhx_cal_container" style='width:100%; height:600px;'>
     <div class="dhx_cal_navline">
       <div class="dhx_cal_prev_button">&nbsp;</div>
       <div class="dhx_cal_next_button">&nbsp;</div>
       <div class="dhx_cal_today_button"></div>
       <div class="dhx_cal_date"></div>
+        
+          <button @click="PDF" type="button" class="btn btn-danger btn-sm" style="margin-left:850px;margin-top:15px; "> 
+          <span class="glyphicon glyphicon-download-alt"></span> Export to PDF
+        </button>
+         
       <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
       <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
       <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
       <div class="dhx_cal_tab" name="agenda_tab" style="right:280px;"></div>
+     
     </div>
     <div class="dhx_cal_header"></div>
     <div class="dhx_cal_data"></div>
@@ -29,6 +35,11 @@ import 'dhtmlx-scheduler'
 import 'dhtmlx-scheduler/codebase/ext/dhtmlxscheduler_pdf.js';
 import 'dhtmlx-scheduler/codebase/ext/dhtmlxscheduler_agenda_view.js';
 import 'dhtmlx-scheduler/codebase/ext/dhtmlxscheduler_editors.js';
+import '../assets/api.js';
+
+
+
+
 
 
 
@@ -47,6 +58,8 @@ export default {
         scheduler.locale.labels.agenda_tab="Agenda";
          scheduler.config.buttons_left=["dhx_save_btn","dhx_cancel_btn","report_button"];
          scheduler.locale.labels["report_button"] = "Report";
+
+         
         var status = [
          { key: "Done", label: 'Done' },
          { key: "Not done", label: 'Not done' }
@@ -69,7 +82,21 @@ export default {
       }
       ];
 
-      
+//tick and time
+    scheduler.attachEvent("onTemplatesReady", function(){
+    scheduler.templates.event_header = function(start,end,ev)
+    {
+        if (ev.status == "Done"){
+            return (" <i class='glyphicon glyphicon-ok' style='color:blue'> </i> "+
+                scheduler.templates.event_date(start)+" - "+scheduler.templates.event_date(end))
+        } else {
+           return (" <i class='glyphicon glyphicon-time' style='color:red'></i> "+
+                scheduler.templates.event_date(start)+" - "+scheduler.templates.event_date(end))
+        }
+    };
+});
+
+      	
         scheduler.init(this.$refs.scheduler_here,new Date(),"week");
         
         scheduler.templates.xml_date = function(value){ return new Date(value); };
@@ -99,9 +126,12 @@ export default {
         });
 
         scheduler.attachEvent("onEventChanged", function(id,ev){
+        
          const response =  VisitService.putVisits(ev);
          scheduler.updateEvent(id);
        
+          
+      
         });
 
         scheduler.attachEvent("onConfirmedBeforeEventDelete", function(id,e){
@@ -114,8 +144,8 @@ export default {
          if(button_id == "report_button"){
         console.log("report")
     }
-});
-});
+      });
+      });
    
     })
     .catch(e => {
@@ -125,6 +155,10 @@ export default {
       
     },
   methods: {
+    PDF : function()
+    {
+     scheduler.exportToPDF();
+    }
 
   },
 }
