@@ -181,7 +181,31 @@ export default {
   .charts-links{
     text-decoration: none;
     list-style: none;
+    padding: 0;
   }
+  .charts-links button{
+    background-color: transparent;
+  }
+  .charts-links button {
+    width: 141px;
+    box-sizing: border-box;
+    color: rgb(129, 206, 74);
+    display: block;
+    font-size: 1.25em;
+    margin: 0 1em 0.3em 0;
+    padding: 0.5em 1em;
+    text-align: center;
+    flex: 1;
+    border: thin solid rgb(129, 206, 74);
+  }
+
+  .charts-links button:hover{
+      color: #fff;
+      background: rgb(129, 206, 74);
+      border-color: rgb(129, 206, 74);
+      text-decoration: none;
+  }
+
   .main-panel .nav-tabs li a {
     margin-left: 5px;
     line-height: 1.42857143;

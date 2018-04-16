@@ -61,14 +61,27 @@
   </div>
 </template>
 <script>
+import SalesService from '@/services/SalesService'
+
+function getTopSale (salesArray) {
+  return salesArray.filter(s => s.amount === Math.max.apply(Math, salesArray.map(o => o.amount)))[0]
+}
 function getTopProduct (productsArray) {
   return productsArray.filter(p => p.quantity === Math.max.apply(Math, productsArray.map(o => o.quantity)))[0]
+}
+async function getSales () {
+  try {
+    const response = await SalesService.getSales()
+    return response.data
+  } catch (err) {
+    return undefined
+  }
 }
 export default {
   name: 'TopSale',
   data () {
     return {
-      maxSale: this.$parent.maxSale,
+      maxSale: {},
       topProduct: {}
     }
   },
@@ -76,8 +89,10 @@ export default {
   },
   mounted: function () {
     console.log('Top sale mounted')
-    this.maxSale = this.$parent.maxSale
-    this.topProduct = getTopProduct(this.maxSale.report.order.products)
+    getSales().then(data => {
+      this.maxSale = getTopSale(data)
+      this.topProduct = getTopProduct(this.maxSale.report.order.products)
+    })
   }
 }
 </script>
