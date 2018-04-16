@@ -11,59 +11,12 @@
       <!-- gui fixture -->
     </div>
     <div class="col-md-6">
-      <h3>Most profitable sales date: 04/04/2018</h3>
-      <h4>Delegate: John Peterson</h4>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="panel">
-            <div class="panel-body red-panel">
-              <div class="row">
-                <div class="col-md-4">
-                  <i class="fa fa-tag"></i>
-                </div>
-                <div class="col-md-8">
-                  Amount Closed
-                  <h4>4522 DT</h4>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="panel">
-            <div class="panel-body green-panel">
-              <div class="row">
-                <div class="col-md-4">
-                  <i class="fa fa-medkit"></i>
-                </div>
-                <div class="col-md-8">
-                  Most Sold Item
-                  <h4>Maxilase</h4>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="panel">
-            <div class="panel-body blue-panel">
-              <div class="row">
-                <div class="col-md-4">
-                  <i class="fa fa-user"></i>
-                </div>
-                <div class="col-md-8">
-                  Client Potential
-                  <h4>B</h4>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <topsale></topsale>
     </div>
     <div class="col-md-4">
       <vue-highcharts :options="drilldownOptions" ref="drilldownChart"></vue-highcharts>
     </div>
+    
   </div>
 </template>
 
@@ -73,7 +26,11 @@ import VueHighcharts from 'vue2-highcharts'
 import Highcharts from 'highcharts'
 import SalesService from '@/services/SalesService'
 import Drilldown from '../../../node_modules/highcharts/modules/drilldown.js'
+import TopSale from '@/components/adminCharts/TopSale'
 
+function getTopSale(salesArray) {
+  return salesArray.filter(s => s.amount === Math.max.apply(Math,salesArray.map(o => o.amount)))[0]
+}
 function millimesToDT (millimes) {
   return millimes / 1000;
 }
@@ -148,10 +105,12 @@ function getYearlyArray () {
 
 export default{
     components: {
-        VueHighcharts
+        VueHighcharts,
+        'topsale': TopSale
     },
     data(){
       return{
+        maxSale: {},
         lineChartOptions: {
           chart: {
             type: 'spline'
@@ -210,7 +169,7 @@ export default{
             type: 'column'
           },
           title: {
-            text: 'Basic drilldown'
+            text: 'Top sale products'
           },
           xAxis: {
             type: 'category'
@@ -226,20 +185,7 @@ export default{
               }
             }
           },
-          series: [{
-            name: 'Things',
-            colorByPoint: true,
-            data: [{
-              name: 'Animals',
-              y: 5
-            }, {
-              name: 'Fruits',
-              y: 2
-            }, {
-              name: 'Cars',
-              y: 4
-            }]
-          }]
+          series: []
         }
       }
     },
@@ -248,6 +194,8 @@ export default{
         console.log('Mounted!')
         getSales().then(data => {
           console.log('One boi:', data[0])
+          this.maxSale = getTopSale(data)
+
           let wholesalerDataArray = getYearlyArray()
           let pharmacyDataArray = getYearlyArray()
 
@@ -287,13 +235,14 @@ export default{
           }
 
           let lineCharts = this.$refs.lineCharts
+
           lineCharts.delegateMethod('showLoading', 'Loading...')
           setTimeout(() => {
               lineCharts.addSeries(asyncWholesalersData)
               lineCharts.addSeries(asyncPharmacyData)
               lineCharts.hideLoading()
           }, 2000)
-
+          // Pie chart data
           let asyncPiechartData = {
               name: 'Amount',
               data: [
@@ -302,11 +251,35 @@ export default{
               ]
           }
           let pieChart = this.$refs.pieChart
+
           pieChart.delegateMethod('showLoading', 'Loading...')
           setTimeout(() => {
               pieChart.addSeries(asyncPiechartData)
               pieChart.hideLoading()
           }, 2000)
+          // Top sale drilldown chart
+          let productsDrillDownData = []
+
+          this.maxSale.report.order.products.forEach(p => {
+            let productObj = {
+              name: p.productName,
+              y: p.quantity
+            }
+            productsDrillDownData.push(productObj)
+          })
+          let asyncDrillDownData = {
+              name: 'Quantity',
+              colorByPoint: true,
+              data: productsDrillDownData 
+          }
+
+          let drilldownChart = this.$refs.drilldownChart
+          drilldownChart.delegateMethod('showLoading', 'Loading...')
+          setTimeout(() => {
+              drilldownChart.addSeries(asyncDrillDownData)
+              drilldownChart.hideLoading()
+          }, 2000)
+
         })
       } 
     },
@@ -321,28 +294,5 @@ export default{
     text-decoration: none;
     list-style: none;
   }
-  .panel i{
-    font-size: 55px;
-  }
-  .red-panel{
-    background-color: #fc8675;
-    color: white;
-    border-radius: 2%;
-  }
 
- .green-panel{
-    background-color: rgb(54, 169, 206);
-    color: white;
-    border-radius: 2%;
-  }
- .blue-panel{
-    background-color: rgb(129, 206, 74);
-    color: white;
-    border-radius: 2%;
-  }
- .navy-panel{
-    background-color: rgb(1, 3, 38);
-    color: white;
-    border-radius: 2%;
-  }
 </style>
