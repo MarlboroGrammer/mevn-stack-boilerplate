@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-md-8">
                   Most Sold Item
-                  <h4>Maxilase</h4>
+                  <h4>{{topProduct.productName}}</h4>
                 </div>
               </div>
             </div>
@@ -61,12 +61,15 @@
   </div>
 </template>
 <script>
-
+function getTopProduct (productsArray) {
+  return productsArray.filter(p => p.quantity === Math.max.apply(Math, productsArray.map(o => o.quantity)))[0]
+}
 export default {
   name: 'TopSale',
   data () {
     return {
-      maxSale: this.$parent.maxSale
+      maxSale: this.$parent.maxSale,
+      topProduct: {}
     }
   },
   methods: {
@@ -74,6 +77,7 @@ export default {
   mounted: function () {
     console.log('Top sale mounted')
     this.maxSale = this.$parent.maxSale
+    this.topProduct = getTopProduct(this.maxSale.report.order.products)
   }
 }
 </script>
