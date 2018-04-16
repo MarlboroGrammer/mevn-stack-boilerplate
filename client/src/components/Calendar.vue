@@ -51,7 +51,7 @@ export default {
     }
   },
     mounted() {
-
+      
     const response = VisitService.getVisits()
     .then(response => {
       this.events = response.data
@@ -65,7 +65,14 @@ export default {
          { key: "Not done", label: 'Not done' }
         
         ];
+        var type =[
+        { key: "Pharmacist", label: 'Pharmacist' },
+        { key: "Doctor", label: 'Doctor' },
+        { key: "Wholesaler", label: 'Wholesaler' },
+        ]
         scheduler.locale.labels.section_priority = 'Status';
+        scheduler.locale.labels.section_type = 'Type';
+        scheduler.locale.labels.section_Adresse= "Adresse";
 
        scheduler.config.lightbox.sections = [
       {
@@ -75,8 +82,11 @@ export default {
         type: "textarea",
         focus: true
       },
+        {name:"Adresse", height:43, map_to:"Adresse", type:"textarea"},
           { name:"priority", height:58, options:status, 
             map_to:"status", type:"radio", vertical:true},
+           { name:"type", height:65, options:type, 
+            map_to:"visitType", type:"radio", vertical:true},
       {
         name:"time", height:72, type:"time", map_to:"auto"
       }
@@ -102,7 +112,7 @@ export default {
         scheduler.templates.xml_date = function(value){ return new Date(value); };
 
        
-       
+     //color section  
         for (var i=0;i<this.events.length;i++)
         {
         this.events[i].id=i;
@@ -122,24 +132,32 @@ export default {
         scheduler.parse(this.events, 'json');
      
         scheduler.attachEvent("onEventAdded", function(id,ev){
+         
+          if (ev.visitType=="Pharmacist")
+          {
+            ev.color="green";
+           ev.textColor="white";
+          }
+          if (ev.visitType=="Doctor")
+          {
+            ev.color="pink";
+          
+          }
+          else
+          ev.color="orange"
+          const response = VisitService.insert(ev)
         
         });
 
         scheduler.attachEvent("onEventChanged", function(id,ev){
-        
          const response =  VisitService.putVisits(ev);
          scheduler.updateEvent(id);
-       
-          
-      
         });
 
         scheduler.attachEvent("onConfirmedBeforeEventDelete", function(id,e){
         const response = VisitService.deleteVisits(e)
         scheduler.deleteEvent(id);
          return true;
-
-       
       });
 
         scheduler.attachEvent("onLightboxButton", function(button_id, node, e){
@@ -149,12 +167,23 @@ export default {
     }
       });
     
-
+//Notif section
           for (var i=0;i<this.events.length;i++)
         {
         if (this.events[i].start_date.toISOString().slice(0, 10)== new Date().toISOString().slice(0, 10))
         {
-          
+          if (this.events[i].start_date.getHours()-new Date().getHours()<=2 && this.events[i].start_date.getHours()-new Date().getHours()>0)
+          {
+              this.$notify({
+          group: 'left',
+          title: 'Pharmakeys Rappel',
+          text:  this.events[i].text +" commence dans deux heures à peu près",
+          duration: 8000,
+          type: 'warning'
+          });
+
+          }
+
           //pharma Notif
           if (this.events[i].visitType=="Pharmacist")
           {
@@ -195,10 +224,7 @@ export default {
        
           
         }
-        
-       
-       
-        
+         
         }
    
     })
@@ -207,6 +233,10 @@ export default {
     })
 
       
+    },
+    created : function()
+    {
+
     },
   methods: {
     PDF : function()
