@@ -8,7 +8,16 @@ router.get('/:credentialsId', function (req, res, next) {
     if (err) {
       res.send(err)
     } else {
-      console.log('Testing delegate', delegate)
+      res.json(delegate)
+    }
+  })
+})
+
+router.get('/d/:delegateId', function (req, res, next) {
+  Degelates.findOne({'_id': req.params.delegateId + ''}, function (err, delegate) {
+    if (err) {
+      res.send(err)
+    } else {
       res.json(delegate)
     }
   })

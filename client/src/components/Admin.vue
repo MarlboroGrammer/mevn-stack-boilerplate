@@ -72,11 +72,11 @@
               <div class="panel panel-body">
                 <ul class="charts-links">
                   <li>
-                    <button @click="loadChart('Stacked')">Stacked Chart</button>
+                    <button @click="loadChart('Stacked')">Profitability</button>
                     <hr>
                   </li>
                   <li>
-                    <button @click="loadChart('Line')">Line Chart</button>
+                    <button @click="loadChart('Line')">Sales</button>
                     <hr>
                   </li>
                 </ul>

@@ -2,16 +2,35 @@
 <template>
   <div>
     <div class="col-md-10">
-      <vue-highcharts :options="stackChartOptions"></vue-highcharts>
+      <vue-highcharts :options="stackChartOptions" ref="stackedChart"></vue-highcharts>
     </div>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
+import ActionsService from '@/services/ActionsService'
+import DelegatesService from '@/services/DelegatesService'
 import VueHighcharts from 'vue2-highcharts'
 import Highcharts from 'highcharts'
 
+async function getActions () {
+  try {
+    const response = await ActionsService.getActions()
+    return response.data
+  } catch (err) {
+    return undefined
+  }
+}
+
+async function getDelegate (delegateId) {
+  try {
+    const response = await DelegatesService.getDelegateById(delegateId)
+    return response.data
+  } catch (err) {
+    return undefined
+  }
+}
 export default{
     components: {
         VueHighcharts
@@ -23,15 +42,15 @@ export default{
             type: 'column'
           },
           title: {
-            text: 'Stacked column chart'
+            text: 'Overall Profitability'
           },
           xAxis: {
-            categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+            type: 'category'
           },
           yAxis: {
             min: 0,
             title: {
-              text: 'Total fruit consumption'
+              text: 'DT'
             },
             stackLabels: {
               enabled: true,
@@ -65,17 +84,62 @@ export default{
               }
             }
           },
-          series: [{
-            name: 'John',
-            data: [5, 3, 4, 7, 2]
-          }, {
-            name: 'Joe',
-            data: [3, 4, 4, 2, 5]
-          }]
+          series: []
         }
       }
     },
     methods: {
+    },
+    mounted: function () {
+      let stackedChartDataArray = []
+      let namesArray = []
+      getActions().then(data => {
+        data.forEach(a => {
+          stackedChartDataArray[a.delegate._id] = {
+            CA: 0,
+            Charges: 0
+          }
+          namesArray[a.delegate._id] = a.delegate.name.concat(' ', a.delegate.surname)
+        })
+        let delegateName = ''
+        getDelegate(key).then(delegate => {
+          delegateName = delegate.name + ' ' + delegate.surname
+        })
+        console.log('Initialised boi:', stackedChartDataArray)
+        data.forEach(a => {
+          if (a.amount > 0) {
+            stackedChartDataArray[a.delegate._id].CA += (a.amount / 1000)
+          } else {
+            stackedChartDataArray[a.delegate._id].Charges += ((a.amount * -1) / 1000)
+          } 
+        })
+        let caData = [], chargesData = []
+
+        for (var key in stackedChartDataArray) {
+          caData.push({name: namesArray[key], y: stackedChartDataArray[key].CA})
+          chargesData.push({name: namesArray[key], y: stackedChartDataArray[key].Charges})
+        }
+      
+        let chargesObj = {
+          name: 'Charges',
+          data: chargesData
+        }, caObj = {
+          name: 'CA',
+          data: caData
+        }
+
+        let stackedChartSeries = [chargesObj, caObj]
+        let stackedChart = this.$refs.stackedChart
+
+        console.log(stackedChartSeries)
+        stackedChart.delegateMethod('showLoading', 'Loading...')
+        setTimeout(() => {
+          stackedChart.addSeries(chargesObj)
+          stackedChart.addSeries(caObj)
+          stackedChart.hideLoading()
+        }, 2000)
+
+      })
     }
 }
 </script>

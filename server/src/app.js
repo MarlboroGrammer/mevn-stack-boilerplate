@@ -9,6 +9,7 @@ const product = require('./APIproduct')
 const reports = require('./reports')
 const delegates = require('./delegates.js')
 const sales = require('./sales.js')
+const actions = require('./actions.js')
 
 const app = express()
 const config = require('./config/parameters')
@@ -22,6 +23,7 @@ app.use('/delegates', delegates)
 app.use('/products', product)
 app.use('/visits', visit)
 app.use('/sales', sales)
+app.use('/actions', actions)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   var err = new Error('Not Found')

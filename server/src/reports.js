@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 var Reports = require('./models/report')
 var Sales = require('./models/sales')
+var Actions = require('./models/actions')
 
 router.get('/', function (req, res, next) {
   Reports.find({}).populate('delegate').exec(function (err, reports) {
@@ -120,7 +121,16 @@ router.post('/add', function (req, res, next) {
         report: ReportObj._id
       })
 
+      ActionsObj = new Actions({
+        date: new Date(),
+        amount: ReportObj.order.TotalEL
+      })
       SalesObj.save(function (err, res) {
+        if (err) {
+          res.send(err)
+        }
+      })
+      ActionsObj.save(function (err, actRes) {
         if (err) {
           res.send(err)
         }
