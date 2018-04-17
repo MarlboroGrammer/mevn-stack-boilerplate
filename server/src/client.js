@@ -48,7 +48,7 @@ router.delete('/client/:id', (req, res) => {
   })
 })
 
-// Update a post
+// Update a client
 router.put('/client/:id', function (req, res) {
   var id = req.params.id
   var name = req.body.name
@@ -65,5 +65,7 @@ router.put('/client/:id', function (req, res) {
     }
   })
 })
+
+
 
 module.exports = router

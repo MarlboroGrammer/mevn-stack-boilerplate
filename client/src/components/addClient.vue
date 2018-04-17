@@ -37,7 +37,7 @@
         >
         </vue-google-autocomplete>
         <input type="text" name="street" placeholder="Rue" class="form-control" v-model="street" required>
-        <input type="text" name="postalCode" placeholder="Code postale" class="form-control" v-model="postalCode" required>
+        <input type="number" name="postalCode" placeholder="Code postale" class="form-control" v-model="postalCode" required>
         </fieldset>
     </div>
     <div class="form-group">

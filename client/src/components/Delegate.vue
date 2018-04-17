@@ -59,7 +59,7 @@
           <a data-toggle="tab" href="#myMap">Ma Carte</a>
         </li>
           <li>
-          <a data-toggle="tab" href="#client">Clintelle</a>
+          <a data-toggle="tab" href="#client">Clientelle</a>
         </li>
         <li>
           <a data-toggle="tab" href="#overview">Overview</a>
@@ -70,10 +70,10 @@
         <div id="activity" class="tab-pane fade in active">
           
         </div>
-         <div id="client" class="tab-pane fade in active">
+         <div id="client" class="tab-pane fade">
           <client></client>
         </div>
-        <div id="myMap" class="tab-pane fade in active">
+        <div id="myMap" class="tab-pane fade">
           <myMap></myMap>
         </div>
         <div id="reports" class="tab-pane fade">

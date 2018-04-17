@@ -4,6 +4,7 @@ export default {
   getClient () {
     return Api().get('clients/client')
   },
+  
   addClient (client) {
     return Api().post('clients/client', client)
   }

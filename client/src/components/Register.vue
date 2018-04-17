@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h1>Register page</h1>
     <div class="form-group">
       <input type="email" name="email" placeholder="Email" class="form-control" v-model="email">
@@ -28,7 +28,7 @@ export default {
   methods: {
     async register () {
       const response = await AuthenticationService.register({
-        email: this.email,
+        username: this.email,
         password: this.password
       })
       console.log(response)

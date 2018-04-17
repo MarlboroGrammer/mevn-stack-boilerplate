@@ -1,10 +1,9 @@
 var mongoose = require('mongoose')
 
 var clientSchema = new mongoose.Schema({
-  location: {
-    long: Number,
-    latit: Number
-  },
+  
+  lng: Number,
+  lat: Number,
   area: String,
   name: String,
   address: {

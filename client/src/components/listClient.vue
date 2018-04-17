@@ -21,15 +21,15 @@
         <tr v-for="(client,index) in clients" :key="client">
             <td> {{index+1}} </td>
             <td>
-                <input v-if="update" v-model="client.name" class="form-control" style="width:120px;">  
+                <input v-if="update" v-model="client.name" class="form-control" style="width:120px;" required>  
                 <span v-else>  {{client.name}}  </span>
             </td>
             <td>
-              <input v-if="update" v-model="client.email" class="form-control" style="width:120px;">  
+              <input v-if="update" v-model="client.email" class="form-control" style="width:120px;" required>  
               <span v-else>  {{client.email}}  </span>          
             </td>
             <td>
-              <select v-if="update" v-model="client.type" placeholder="Choisir le type du client" >
+              <select v-if="update" v-model="client.type" placeholder="Choisir le type du client" required>
                 <option value="Docteur">Docteur</option>
                 <option value="Pharmacien">Pharmacien</option>
                 <option value="Hospital">Hospital</option>
@@ -38,21 +38,21 @@
                 <span v-else>  {{client.type}}  </span>
             </td>
             <td>
-                <input v-if="update" v-model=" client.phoneNumber" class="form-control" style="width:100px;">  
+                <input v-if="update" type="number" v-model=" client.phoneNumber" class="form-control" style="width:100px;" required>  
                 <span v-else>  {{ client.phoneNumber}}  </span>
             </td>
             <td v-if="client.address!==undefined" >
-               <input v-if="update" v-model=" client.address.city" class="form-control" style="width:100px;" >  
+               <input v-if="update" v-model=" client.address.city" class="form-control" style="width:100px;" required>  
                <span v-else>  {{ client.address.city }}  </span>
             </td>
             <td v-else>Not set</td>
             <td v-if="client.address!==undefined">
-                <input v-if="update" v-model="  client.address.street" class="form-control" style="width:150px;">  
+                <input v-if="update" v-model="  client.address.street" class="form-control" style="width:150px;" required>  
                 <span v-else style="padding-right:120px;">  {{  client.address.street }}  </span>
             </td>
             <td v-else>Not set</td>
             <td v-if="client.address!==undefined" >
-                <input v-if="update" v-model="  client.address.postalCode" class="form-control" style="width:70px;">  
+                <input type="number" v-if="update" v-model="  client.address.postalCode" class="form-control" style="width:80px;" required>  
                 <span v-else >  {{  client.address.postalCode }}  </span>
             </td>   
             <td v-else>Not set</td>       
@@ -93,6 +93,7 @@ export default {
   mounted () {
     this.getClient()
   },
+    
   methods: {
     async getClient() {
       const response = await ClientService.getClient()
@@ -128,7 +129,10 @@ export default {
         this.update=!this.update;
      
     }
-}
+},
+    updated : function(){
+        $('#example').DataTable();
+  }
 }
 </script>
 <style type="text/css">
