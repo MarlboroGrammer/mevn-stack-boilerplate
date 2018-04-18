@@ -5,6 +5,6 @@ export default {
     return Api().get(`/delegates/${credentialsId}`)
   },
   getDelegateById (delegateId) {
-  	return Api().get(`delegates/d/${delegateId}`)
+    return Api().get(`delegates/d/${delegateId}`)
   }
 }

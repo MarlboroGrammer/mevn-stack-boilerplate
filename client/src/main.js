@@ -11,9 +11,15 @@ import VModal from 'vue-js-modal'
 import VuePaginate from 'vue-paginate'
 import VuejsDialog from "vuejs-dialog"
 import Notifications from 'vue-notification'
+import VueHighcharts from 'vue2-highcharts'
+import Highcharts from 'highcharts'
+
+//load maps from highcharts
+import loadMap from 'highcharts/modules/map'
 
 Vue.config.productionTip = false
 
+Vue.use(VueHighcharts, { Highcharts })
 Vue.use(VModal, { dialog: true })
 Vue.use(VuePaginate)
 Vue.use(Notifications)

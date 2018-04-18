@@ -1,0 +1,175 @@
+<!-- eslint-disable -->
+<template>
+  <div>
+    <div class="col-md-3">
+      <div id="tunisiamap">
+        <img src="@/assets/images/loading.gif">
+      </div>  
+    </div>
+    <div class="col-md-3 before-data" v-if='govSelected == false'>
+      <h2>Select government</h2>
+      <p>Data will show here</p>
+    </div>
+    <div class="col-md-7" v-if='govSelected == true'>
+      <h2>Currently viewing data of <strong>{{govName}}</strong></h2>
+      <div v-if='visits.length > 0'>
+        <vue-highcharts :options="pieChartOptions" ref="pieChart"></vue-highcharts>
+      </div>
+      <h2 v-if='visits.length === 0'>No data was found</h2>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-7" v-if='govSelected == true && visits.length > 0'>
+      <h2>Delegates assigned to this area:</h2>
+      <ul class="delegates-list">
+        <li>Mohsen 1</li>
+        <li>Mohsen 2</li>
+        <li>Mohsen 3</li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script>
+/* eslint-disable */
+import VisitService from '@/services/VisitService'
+import VueHighcharts from 'vue2-highcharts'
+import Highcharts from 'highcharts'
+
+async function getVisits (){
+  try{
+    const response = await VisitService.getVisits()
+    return response.data
+  } catch (err) {
+    return undefined
+  }
+}
+
+function getGovFromBoi (adresseBoi) {
+  return adresseBoi.split(',')[1].trim()
+}
+
+function getCount (array, crit) {
+  let tmp = array
+  return tmp.filter(t => t.status === crit).length
+}
+export default{
+    components: {
+      VueHighcharts
+    },
+    data(){
+      return{
+        govName: '',
+        govSelected: false,
+        visits: [],
+        visitsCopy: [],
+        pieChartOptions: {
+          chart: {
+              type: 'pie',
+              options3d: {
+                  enabled: true,
+                  alpha: 45
+              }
+          },
+          title: {
+              text: 'Coverage rate'
+          },
+          plotOptions: {
+              pie: {
+                  innerSize: 100,
+                  depth: 45
+              }
+          },
+          series: []
+        }
+      }
+    },
+    methods: {
+      setGovName (govName) {
+        this.govSelected = true
+        this.govName = govName
+        this.visits = this.visitsCopy
+        this.visits = this.visits.filter(v => getGovFromBoi(v.Adresse) === this.govName)
+
+        if (this.visits.length > 0) { 
+          let asyncPiechartData = {
+            name: 'Visits',
+            data: [
+                ['Done', getCount(this.visits, 'Done')],
+                ['Not done', getCount(this.visits, 'Not done')] 
+            ]
+          }
+
+          let pieChart = this.$refs.pieChart
+          pieChart.delegateMethod('showLoading', 'Loading...')
+          setTimeout(() => {
+            pieChart.removeSeries()
+            pieChart.addSeries(asyncPiechartData)
+            pieChart.hideLoading()
+          }, 1000)
+        }
+      },
+      drawTunisiaMap () {
+        var width = 220, height = 500
+        var path = d3.geo.path()
+        var svg = d3.select("#tunisiamap").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+        let self = this
+        d3.json("https://gist.githubusercontent.com/mohamed-ali/8732826/raw/901a577fafad6277e38f2c0f6bf09561fd4124c9/tunisia.json", function(error, topology) {
+            var featureCollection = topojson.feature(topology, topology.objects.governorates)
+            console.log(featureCollection)
+            var bounds = d3.geo.bounds(featureCollection)
+            var centerX = d3.sum(bounds, function(d) {return d[0];}) / 1.15,
+                centerY = d3.sum(bounds, function(d) {return d[1];}) / 2
+
+            var projection = d3.geo.mercator()
+              .scale(3000)
+              .center([centerX, centerY])
+              
+            path.projection(projection)
+            
+            svg.selectAll("path")
+                .data(featureCollection.features)
+                .enter().append("path")
+                .style("fill", "#ccc")
+                .style(":hover", "#00AEEC")
+                .attr("d", path)
+                .on("click", function(d, i) {
+                  self.setGovName(d.properties.gov_name_f)
+                })
+        });
+      }
+    },
+    mounted: function () {
+      setTimeout(() => {
+          $('#tunisiamap').html('')
+          this.drawTunisiaMap()
+          getVisits().then(data => {
+            this.visits = data
+            this.visitsCopy = this.visits
+          })
+      }, 2000) 
+
+    },
+    watch: {
+      'govSelected': function () {
+        console.log(this.govSelected)
+      }
+    }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+  svg {
+    border: 1px solid #ccc !important;
+  }
+  path {
+    fill: #ccc !important;
+    stroke: #fff !important;
+    stroke-width: .5px !important;
+  }
+  path:hover {
+    fill: #00AEEC !important;
+}
+</style>

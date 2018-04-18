@@ -72,11 +72,15 @@
               <div class="panel panel-body">
                 <ul class="charts-links">
                   <li>
-                    <button @click="loadChart('Stacked')">Profitability</button>
+                    <button @click="loadChart('Stacked')" class="chart-button chart-inactive" id="profitability">Profitability</button>
                     <hr>
                   </li>
                   <li>
-                    <button @click="loadChart('Line')">Sales</button>
+                    <button @click="loadChart('Line')" class="chart-button chart-inactive" id="sales">Sales</button>
+                    <hr>
+                  </li>
+                  <li>
+                    <button @click="loadChart('Coverage')" class="chart-button chart-inactive" id="coverage">Coverage</button>
                     <hr>
                   </li>
                 </ul>
@@ -123,11 +127,12 @@
 </template>
 
 <script>
-/* eslint-disable no-return-assign */
+/* eslint-disable */
 import AdminList from '@/components/adminReports/List'
 import AdminReport from '@/components/adminReports/Report'
 import LineChart from '@/components/adminCharts/LineChart'
 import StackedChart from '@/components/adminCharts/StackedChart'
+import CoverageChart from '@/components/adminCharts/CoverageChart'
 import VisitAdmin from '@/components/VisitsAdmin'
 import Products from '@/components/Products'
 
@@ -142,7 +147,7 @@ export default {
     return {
       currentComponent: AdminList,
       reportToApproveID: '',
-      currentChart: LineChart
+      currentChart: StackedChart
     }
   },
   methods: {
@@ -161,13 +166,26 @@ export default {
       switch (selectedChart) {
         case 'Line':
           this.currentChart = LineChart
+          $('#sales').addClass('chart-active')
+          $('#profitability').removeClass('chart-active')
+          $('#coverage').removeClass('chart-active')
           break
         case 'Stacked':
           this.currentChart = StackedChart
+          $('#profitability').addClass('chart-active')
+          $('#sales').removeClass('chart-active')
+          $('#coverage').removeClass('chart-active')
+          break
+        case 'Coverage':
+          this.currentChart = CoverageChart
+          $('#coverage').addClass('chart-active')
+          $('#sales').removeClass('chart-active')
+          $('#profitability').removeClass('chart-active')
       }
     }
   },
   mounted: function () {
+    $('#profitability').addClass('chart-active')
   },
   beforeCreate: function () {
     if (this.$store.getters.isLoggedIn === false || this.$store.getters.getUser.role !== 'Admin') {
@@ -183,23 +201,32 @@ export default {
     list-style: none;
     padding: 0;
   }
-  .charts-links button{
-    background-color: transparent;
+  .charts-links .chart-button{
+    
   }
-  .charts-links button {
+  .charts-links .chart-button{
     width: 141px;
     box-sizing: border-box;
-    color: rgb(129, 206, 74);
     display: block;
     font-size: 1.25em;
     margin: 0 1em 0.3em 0;
     padding: 0.5em 1em;
     text-align: center;
     flex: 1;
-    border: thin solid rgb(129, 206, 74);
   }
 
-  .charts-links button:hover{
+  .chart-inactive{
+    color: rgb(129, 206, 74);
+    background-color: transparent;
+    border: thin solid rgb(129, 206, 74);
+  }
+  .chart-active{
+    color: #fff;
+    background: rgb(129, 206, 74);
+    border-color: rgb(129, 206, 74);
+    text-decoration: none;
+  }
+  .charts-links .chart-button:hover{
       color: #fff;
       background: rgb(129, 206, 74);
       border-color: rgb(129, 206, 74);

@@ -113,12 +113,18 @@ export default{
             stackedChartDataArray[a.delegate._id].Charges += ((a.amount * -1) / 1000)
           } 
         })
-        let caData = [], chargesData = []
+        let caData = [], chargesData = [], totalCA = 0, totalCharges = 0
 
         for (var key in stackedChartDataArray) {
+          totalCA += stackedChartDataArray[key].CA
+          totalCharges += stackedChartDataArray[key].Charges
           caData.push({name: namesArray[key], y: stackedChartDataArray[key].CA})
           chargesData.push({name: namesArray[key], y: stackedChartDataArray[key].Charges})
         }
+
+        //final push in arrays for total count
+        caData.push({name: 'Total', y: totalCA})
+        chargesData.push({name: 'Total', y:totalCharges})
       
         let chargesObj = {
           name: 'Charges',
