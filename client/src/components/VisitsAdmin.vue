@@ -133,6 +133,7 @@ export default {
     const response = VisitService.getVisits()
     .then(response => {
       this.visits = response.data
+      console.log(visits)
     })
     .catch(e => {
       this.errors.push(e)     

@@ -27,6 +27,19 @@ router.get('/admin/data', function (req, res) {
   })
 })
 
+router.get('/admin/datadelegates', function (req, res) {
+  console.log('API boi')
+  Event.find({}).populate('delegate').exec(function (err, reports) {
+    if (err) {
+      res.send(err)
+    }
+    if (!result) {
+      res.status(404).send()
+    } else {
+      res.json(result)
+    }
+  })
+})
 router.put('/admin/data/:id', function (req, res) {
   var id = req.params.id
   var text = req.body.text

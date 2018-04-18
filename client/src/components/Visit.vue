@@ -38,8 +38,8 @@
     </div>
     <div class="form-group">
       <label>Delegate</label>
-      <select class="form-control">
-        <option v-for='delegate in delegates' :value='delegate._id' v-model="chosenDelegate">{{delegate.name}}&nbsp;{{delegate.surname}}</option>
+      <select class="form-control" v-model="chosenDelegate">
+        <option v-for='delegate in delegates' :value='delegate._id'>{{delegate.name}}&nbsp;{{delegate.surname}}</option>
       </select>
     </div>
 

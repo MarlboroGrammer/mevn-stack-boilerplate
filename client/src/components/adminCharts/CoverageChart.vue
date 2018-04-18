@@ -18,13 +18,42 @@
       <h2 v-if='visits.length === 0'>No data was found</h2>
     </div>
     <div class="col-md-2"></div>
-    <div class="col-md-7" v-if='govSelected == true && visits.length > 0'>
+    <div class="col-md-4" v-if='govSelected == true && visits.length > 0'>
       <h2>Delegates assigned to this area:</h2>
       <ul class="delegates-list">
-        <li>Mohsen 1</li>
-        <li>Mohsen 2</li>
-        <li>Mohsen 3</li>
+        <li v-for="delegate in delegates">{{delegate.name}}&nbsp;{{delegate.surname}} 
+          <a href="#">
+            <i class="fa fa-eye" @click="getDelegateVisits(delegate._id)"></i>
+          </a>
+        </li>
       </ul>
+    </div>
+    <div class="col-md-4" v-if='govSelected == true && isSelected == false'>
+      <h2>Select a degelate to see his performance</h2>
+      <p>Click on the eye next to delegate</p>
+    </div>
+    <div class="col-md-6"  v-if="isSelected && delegateVisits.length > 0">
+      <h3>Visits of this delegate:</h3>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Addres</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="delegateVisit in delegateVisits">
+            <td>{{delegateVisit.visitType}}</td>
+            <td>{{delegateVisit.start_date | formatDate}}</td>
+            <td>{{delegateVisit.end_date | formatDate}}</td>
+            <td>{{delegateVisit.Adresse}}</td>
+            <td>{{delegateVisit.status}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -33,6 +62,7 @@
 /* eslint-disable */
 import VisitService from '@/services/VisitService'
 import VueHighcharts from 'vue2-highcharts'
+import DelegatesService from '@/services/DelegatesService'
 import Highcharts from 'highcharts'
 
 async function getVisits (){
@@ -43,7 +73,14 @@ async function getVisits (){
     return undefined
   }
 }
-
+async function getDelegate (delegateId) {
+  try {
+    const response = await DelegatesService.getDelegateById(delegateId)
+    return response.data
+  } catch (err) {
+    return undefined
+  }
+}
 function getGovFromBoi (adresseBoi) {
   return adresseBoi.split(',')[1].trim()
 }
@@ -61,6 +98,9 @@ export default{
         govName: '',
         govSelected: false,
         visits: [],
+        delegates: [],
+        isSelected: false,
+        delegateVisits: [],
         visitsCopy: [],
         pieChartOptions: {
           chart: {
@@ -84,8 +124,14 @@ export default{
       }
     },
     methods: {
+      getDelegateVisits (id) {
+        this.isSelected = true
+        this.delegateVisits = this.visits.filter(v => v.delegate === id)
+        console.log(this.delegateVisits)
+      },
       setGovName (govName) {
         this.govSelected = true
+        this.isSelected = false
         this.govName = govName
         this.visits = this.visitsCopy
         this.visits = this.visits.filter(v => getGovFromBoi(v.Adresse) === this.govName)
@@ -106,6 +152,12 @@ export default{
             pieChart.addSeries(asyncPiechartData)
             pieChart.hideLoading()
           }, 1000)
+          this.visits.forEach(v => {
+            this.delegates = []
+            getDelegate(v.delegate).then(d => {
+              this.delegates.push(d)
+            })
+          })
         }
       },
       drawTunisiaMap () {
