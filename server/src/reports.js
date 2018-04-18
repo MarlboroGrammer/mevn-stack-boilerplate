@@ -121,7 +121,7 @@ router.post('/add', function (req, res, next) {
         report: ReportObj._id
       })
 
-      ActionsObj = new Actions({
+      let ActionsObj = new Actions({
         date: new Date(),
         amount: ReportObj.order.TotalEL
       })

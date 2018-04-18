@@ -7,7 +7,8 @@ var visitScheme = new mongoose.Schema({
   id: Number,
   Adresse: String,
   status: {type: String, enum: ['Done', 'Not done']},
-  visitType: {type: String, enum: ['Pharmacist', 'Doctor', 'Wholesaler']}
+  visitType: {type: String, enum: ['Pharmacist', 'Doctor', 'Wholesaler']},
+  delegate: {type: mongoose.Schema.ObjectId, ref: 'delegate'}
 }, { collection: 'visit' })
 
 module.exports.visit = mongoose.model('EvenT', visitScheme)

@@ -127,16 +127,27 @@ export default{
               .center([centerX, centerY])
               
             path.projection(projection)
-            
+            var div = d3.select("body").append("div") 
+              .attr("class", "tooltip")       
+              .style("opacity", 0)
+
             svg.selectAll("path")
                 .data(featureCollection.features)
                 .enter().append("path")
-                .style("fill", "#ccc")
-                .style(":hover", "#00AEEC")
+                .style('fill', '#ccc')
                 .attr("d", path)
                 .on("click", function(d, i) {
                   self.setGovName(d.properties.gov_name_f)
+                  d3.select(this).attr("r", 10)
+                  .style("fill", "#00AEEC")
                 })
+                .on('mouseover', function(d) {
+                  d3.select(this).attr("r", 10).style("fill", "#00AEEC")
+                })
+                .on('mouseout', function(d) {
+                  d3.select(this).attr("r", 10).style("fill", "#ccc")
+                })
+
         });
       }
     },
@@ -164,12 +175,16 @@ export default{
   svg {
     border: 1px solid #ccc !important;
   }
-  path {
-    fill: #ccc !important;
-    stroke: #fff !important;
-    stroke-width: .5px !important;
-  }
-  path:hover {
-    fill: #00AEEC !important;
+  div.tooltip { 
+    position: absolute;     
+    text-align: center;     
+    width: 60px;          
+    height: 28px;         
+    padding: 2px;       
+    font: 12px sans-serif;    
+    background: lightsteelblue; 
+    border: 0px;    
+    border-radius: 8px;     
+    pointer-events: none;     
 }
 </style>

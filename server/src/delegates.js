@@ -23,4 +23,14 @@ router.get('/d/:delegateId', function (req, res, next) {
   })
 })
 
+router.get('/', function (req, res, next) {
+  Degelates.find({}, function (err, delegates) {
+    if (err) {
+      res.send(err)
+    } else {
+      res.json(delegates)
+    }
+  })
+})
+
 module.exports = router

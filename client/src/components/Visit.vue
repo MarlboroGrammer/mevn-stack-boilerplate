@@ -36,6 +36,12 @@
      <label> End Date </label>
       <input type="datetime-local" name="end_date"  class="form-control" v-model="end_date" required>
     </div>
+    <div class="form-group">
+      <label>Delegate</label>
+      <select class="form-control">
+        <option v-for='delegate in delegates' :value='delegate._id' v-model="chosenDelegate">{{delegate.name}}&nbsp;{{delegate.surname}}</option>
+      </select>
+    </div>
 
     <div class="form-group">
       <button @click="insert" class="btn btn-success">Valider</button>
@@ -48,7 +54,16 @@
 /* eslint-disable */
 import VisitService from '@/services/VisitService'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
+import DelegatesService from '@/services/DelegatesService'
 
+async function getDelegates () {
+  try{
+    const response = await DelegatesService.getDelegates()
+    return response.data
+  } catch (err) {
+    return undefined
+  }
+}
 export default {
   components: { VueGoogleAutocomplete },
   name: 'Visit',
@@ -60,13 +75,18 @@ export default {
       end_date: null,
       visits: [],
       visitType: '',
-      address: ''
+      address: '',
+      chosenDelegate: null,
+      delegates: []
     }
   },
     mounted() {
             // To demonstrate functionality of exposed component functions
             // Here we make focus on the user input
-            this.$refs.address.focus();
+            this.$refs.address.focus()
+            getDelegates().then(d => {
+              this.delegates = d
+            })
         },
 
   methods: {
@@ -80,7 +100,8 @@ export default {
         start_date: this.start_date,
         end_date: this.end_date,
         visitType: this.visitType,
-        Adresse: this.address
+        Adresse: this.address,
+        delegate: this.chosenDelegate
       })
       this.$notify({
        group: 'foo',
@@ -153,9 +174,7 @@ export default {
     },
     getAddressData: function (addressData, placeResultData, id) {
                 this.address = placeResultData.formatted_address
-                console.log(this.address)
-               
-            }
+                console.log(this.address)},
   }
 }
 </script>
