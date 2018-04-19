@@ -6,6 +6,8 @@ var visitScheme = new mongoose.Schema({
   text: String,
   id: Number,
   Adresse: String,
+  lat: Number,
+  lng: Number,
   status: {type: String, enum: ['Done', 'Not done']},
   visitType: {type: String, enum: ['Pharmacist', 'Doctor', 'Wholesaler']}
 }, { collection: 'visit' })

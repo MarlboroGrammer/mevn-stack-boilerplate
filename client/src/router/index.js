@@ -9,6 +9,9 @@ import VisitsAdmin from '@/components/VisitsAdmin'
 import Calendar from '@/components/Calendar'
 import Products from '@/components/Products'
 import ProductsAjout from '@/components/ProductsAjout'
+import addClient from '@/components/addClient'
+import listClient from '@/components/listClient'
+import map from '@/components/map'
 
 Vue.use(Router)
 
@@ -59,6 +62,21 @@ export default new Router({
       path: '/ProductsAjout',
       name: 'ProductsAjout',
       component: ProductsAjout
-    }
+    },
+    {
+      path: '/addClient',
+      name: 'addClient',
+      component: addClient
+    },
+    {
+      path: '/listeClient',
+      name: 'listeClient',
+      component: listClient
+    },
+    {
+      path: '/myMap',
+      name: 'myMap',
+      component: map
+    },
   ]
 })

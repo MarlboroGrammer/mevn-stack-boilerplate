@@ -17,8 +17,9 @@
             </tr>
         </thead>
         <tbody>
+          <tr></tr>
             <tr v-for="(item,index) in visits">
-                <td> {{index}} </td>
+                <td> {{index+1}} </td>
                 <td>
                 <input v-if="update" v-model="item.text" class="form-control">  </input>
                 <span v-else>  {{item.text}}  </span>
@@ -74,7 +75,8 @@
 /* eslint-disable */
 import VisitService from '@/services/VisitService'
 import VuejsDialog from "vuejs-dialog"
-
+import 'datatables.net'
+import 'datatables.net/js/jquery.dataTables.js'
 
 export default {
   name: 'VisitAdmin',

@@ -55,6 +55,10 @@
           <a data-toggle="tab" href="#inbox">Presentations</a>
         </li>
         <li>
+          <a data-toggle="tab" href="#myMap">Ma Carte</a>
+        </li>
+          
+        <li>
           <a data-toggle="tab" href="#overview">Overview</a>
         </li>
         <li>
@@ -72,6 +76,10 @@
               <button class="btn btn-primary" @click="loadListComponent()" v-if="isAdd">Cancel</button>
             </div>
           </div>
+        </div>
+         
+        <div id="myMap" class="tab-pane fade">
+          <myMap></myMap>
         </div>
 
         <div id="calendar" class="tab-pane fade">
@@ -109,12 +117,18 @@ import ListReports from '@/components/delegateReports/List'
 import FormReports from '@/components/delegateReports/Form'
 import Calendar from '@/components/Calendar'
 
+
+
+import myMap from '@/components/map'
+
 export default {
   name: 'Delegate',
   components: {
     'list': ListReports,
     'form': FormReports,
-    'Calendar': Calendar
+    'Calendar': Calendar,
+ 
+    'myMap' : myMap
   },
   data () {
     return {
@@ -150,11 +164,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .main-panel .nav-tabs li a {
-    margin-left: 5px;
-    line-height: 1.42857143;
-    border: 1px solid transparent;
-    border-radius: 4px 4px 0 0;
-    padding-left: 150px;
-    padding-right: 154px;
-  }
+  margin-left: 5px;
+  line-height: 1.42857143;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  padding-left: 80px;
+  padding-right: 90px;
+}
 </style>

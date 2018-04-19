@@ -55,6 +55,9 @@
           <a data-toggle="tab" href="#visits">Visits</a>
         </li>
         <li>
+          <a data-toggle="tab" href="#client">Clientelle</a>
+        </li>
+        <li>
           <a data-toggle="tab" href="#inbox">Presentations</a>
         </li>
         <li>
@@ -66,6 +69,9 @@
       </ul>
 
       <div class="tab-content">
+        <div id="client" class="tab-pane fade">
+          <client></client>
+        </div>
         <div id="activity" class="tab-pane fade in active">
           <charts></charts>
         </div>
@@ -113,6 +119,7 @@ import AdminReport from '@/components/adminReports/Report'
 import Charts from '@/components/adminCharts/Charts'
 import VisitAdmin from '@/components/VisitsAdmin'
 import Products from '@/components/Products'
+import Client from '@/components/listClient'
 
 export default {
   name: 'Admin',
@@ -120,7 +127,8 @@ export default {
     'list': AdminList,
     'charts': Charts,
     'visit-admin': VisitAdmin,
-    'Products': Products
+    'Products': Products,
+    'client' : Client,
   },
   data () {
     return {
