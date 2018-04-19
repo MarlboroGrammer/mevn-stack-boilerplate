@@ -60,7 +60,9 @@ export default {
       end_date: null,
       visits: [],
       visitType: '',
-      address: ''
+      address: '',
+      lat :0 ,
+      lng :0
     }
   },
     mounted() {
@@ -80,16 +82,18 @@ export default {
         start_date: this.start_date,
         end_date: this.end_date,
         visitType: this.visitType,
-        Adresse: this.address
+        Adresse: this.address,
+        lat :this.lat,
+        lng :this.lng
       })
       this.$notify({
        group: 'foo',
        title: 'Pharmakeys Notification',
-      text: 'Visit saved in database',
+      text: 'Visit saved',
       duration: 5000,
       type: 'success '
         });
-       this.$router.push({name: 'Delegate'})
+       this.$router.push({name: 'Admin'})
       }
       else
  
@@ -153,7 +157,9 @@ export default {
     },
     getAddressData: function (addressData, placeResultData, id) {
                 this.address = placeResultData.formatted_address
-                console.log(this.address)
+                this.lat=addressData.latitude
+                 this.lng=addressData.longitude
+           
                
             }
   }

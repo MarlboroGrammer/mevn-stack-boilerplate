@@ -17,6 +17,7 @@
     "@types/dhtmlxscheduler": "^4.3.36",
     "axios": "^0.18.0",
     "d3": "^5.0.0",
+    "datatables.net": "^1.10.16",
     "dhtmlx-scheduler": "^4.4.0",
     "form2js": "^1.0.0",
     "jquery": "^3.3.1",

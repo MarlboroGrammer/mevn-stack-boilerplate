@@ -24,19 +24,24 @@
                 <span v-else>  {{item.text}}  </span>
                 <td>
                   <input type="datetime-local" v-if="update" v-model="item.start_date" class="form-control">  </input>
-                 <span v-else>  {{ item.start_date }}  </span>
+                 <span v-else>  {{ item.start_date | formatDate }}  </span>
                 </td>
                 <td>
                   <input type="datetime-local" v-if="update" v-model="item.end_date" class="form-control">  </input>
-                 <span v-else>  {{ item.end_date }}  </span>
+                 <span v-else>  {{ item.end_date | formatDate }}  </span>
                 </td>
-                <td>
-                    <select v-if="update" class="form-control" v-model="item.status">
+                <td v-if="update">
+                    <select  class="form-control" v-model="item.status">
                     <option disabled value="">Choisissez</option>
                     <option>Done</option>
                     </select>
-                 <span v-else>  {{ item.status }}  </span>
+                 
                  </td>
+                 <td v-else>
+                     <span v-if="item.status==='Done'"class="badge progress-bar-success" >  {{ item.status }}  </span>
+                     <span v-else class="badge progress-bar-warning" >  {{ item.status }}  </span>
+                   </td>
+
                 <td> 
                  <select v-if="update" class="form-control" v-model="item.visitType">
                     <option disabled value="">Choisissez</option>
@@ -74,6 +79,10 @@
 /* eslint-disable */
 import VisitService from '@/services/VisitService'
 import VuejsDialog from "vuejs-dialog"
+import 'datatables.net'
+import 'datatables.net/js/jquery.dataTables.js'
+import 'datatables.net/js/dataTables.bootstrap.min.js'
+
 
 
 export default {

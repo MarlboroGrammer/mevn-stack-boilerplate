@@ -7,7 +7,7 @@ router.get('/', function (req, res, next) {
     if (err) {
       res.send(err)
     } else {
-      console.log('Testing delegate population: ', reports[0].delegate)
+      // console.log('Testing delegate population: ', reports[0].delegate)
       res.json(reports)
     }
   })
