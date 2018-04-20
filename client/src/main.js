@@ -19,9 +19,7 @@ Vue.use(VModal, { dialog: true })
 Vue.use(VuePaginate)
 Vue.use(Notifications)
 Vue.use(VuejsDialog)
-Vue.use(VuetifyGoogleAutocomplete, {
-  apiKey: 'AIzaSyD1_HG5ANhWoLsloCnp2kkbCUp4mWqvzxs', 
-});
+
 
 /* eslint-disable no-new */
 new Vue({

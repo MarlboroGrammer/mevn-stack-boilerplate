@@ -1,17 +1,27 @@
 
 <template>
 
-<div style="backgdound-color:white;" class="container">
-    <div>
+<div style="backgdound-color:white;" class="container" >
+    <div style="margin:5% 20% 5% 20%;">
       <h3>Choisir de voir les:</h3> </br>
-          <input type="radio"  v-model="type" value="docteur" name="R" @click="Trier('Docteur')"> Docteurs </br>
+
+                <div class="btn-group" center> 
+                <button @click="Trier('Docteur')" class="btn btn-primary"> Docteurs </button> 
+                <button @click="Trier('Pharmacien')" class="btn btn-success">Pharmaciens</button> 
+                 <button @click="Trier('Hospital')" class="btn btn-info"> Hôpitaux </button> 
+                <button @click="Trier('Clinique')" class="btn btn-warning">Cliniques</button> 
+                <button @click="Visite()" class="btn btn-danger">Visites quotidiennes</button> 
+                <button @click="initialiseMap()" class="btn btn-primary">Tout voir</button> 
+                </div>
+
+          <!-- <input type="radio"  v-model="type" value="docteur" name="R" @click="Trier('Docteur')"> Docteurs </br>
           <input type="radio"  v-model="type" value="pharmacien" name="R" @click="Trier('Pharmacien')"> Pharmaciens </br>
           <input type="radio"  v-model="type" value="hospital" name="R" @click="Trier('Hospital')" > Hôpitaux </br>
           <input type="radio"  v-model="type" value="clinique" name="R" @click="Trier('Clinique')">  Clinique </br>
-          <input type="radio"  v-model="type" value="visites" name="R" @click="Visite()">  Mes visites quotidienne: </br>
+          <input type="radio"  v-model="type" value="visites" name="R" @click="Visite()">  Mes visites quotidienne: </br> -->
 
     </div>
-    <h1 align="center" style="padding-top:10px;">Votre Carte </h1>
+  <!--   <h1 align="center" style="padding-top:10px;">Votre Carte </h1> -->
       <div class="google-map" :id="mapName">    
       </div> 
       
@@ -75,9 +85,7 @@ const response = await ClientService.getClient()
 
         
 
-				function showPosition(position) {
-          
-				  
+				function showPosition(position) {				  
 				  const myPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
 				  const options = {
@@ -258,11 +266,17 @@ const response = await ClientService.getClient()
                    content: "Nom: "+client.name +" </br> Num Tel: "+ client.phoneNumber +"  </br> Email: "+ client.email
                     });
             const position = new google.maps.LatLng(client.lat, client.lng);
+                var icone = {
+                url: "client/src/components/img/pharma.png", // url
+                scaledSize: new google.maps.Size(50, 50), // scaled size
+                origin: new google.maps.Point(0,0), // origin
+                anchor: new google.maps.Point(0, 0) // anchor
+            };
             var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
             const markerAgencies = new google.maps.Marker({
               position,
               map: map,
-              icon: image,
+              icon:image,
               title: client.name
               
             });
