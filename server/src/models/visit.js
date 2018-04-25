@@ -9,7 +9,7 @@ var visitScheme = new mongoose.Schema({
   lat: Number,
   lng: Number,
   status: {type: String, enum: ['Done', 'Not done']},
-  visitType: {type: String, enum: ['Pharmacist', 'Doctor', 'Wholesaler']}
+  visitType: {type: String, enum: ['Pharmacien', 'Docteur', 'Hospital', 'Clinique']}
 }, { collection: 'visit' })
 
 module.exports.visit = mongoose.model('EvenT', visitScheme)

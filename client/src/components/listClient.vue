@@ -1,5 +1,5 @@
 <template>
-  <div class="container"> 
+  <div class=""> 
   <h1 align="center"> Liste des clients </h1>
   <br>
   <table id="example"  class="table table-striped" style="width:100%">
@@ -17,7 +17,7 @@
             </tr>
         </thead>
       <tbody>
-        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr></tr>
         <tr v-for="(client,index) in clients" :key="client">
             <td> {{index+1}} </td>
             <td>
