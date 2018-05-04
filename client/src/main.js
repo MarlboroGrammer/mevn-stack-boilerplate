@@ -16,9 +16,28 @@ import Highcharts from 'highcharts'
 
 //load maps from highcharts
 import loadMap from 'highcharts/modules/map'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+
+// require styles
+import 'swiper/dist/css/swiper.css'
+import Swiper from 'swiper'
+Swiper.use({
+  name: 'pluginName',
+  params: {
+    pluginSwitch: false,
+  },
+  on: {
+    init() {
+      if (!this.params.pluginSwitch) return
+      console.log('init')
+    },
+    // swiper callback...
+  }
+})
 
 Vue.config.productionTip = false
 
+Vue.use(VueAwesomeSwiper, /* { default global options } */)
 Vue.use(VueHighcharts, { Highcharts })
 Vue.use(VModal, { dialog: true })
 Vue.use(VuePaginate)

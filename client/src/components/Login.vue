@@ -48,6 +48,7 @@ export default {
   },
   methods: {
     async login (event) {
+      console.log('Clicked')
       try {
         event.preventDefault()
         const response = await AuthenticationService.login({

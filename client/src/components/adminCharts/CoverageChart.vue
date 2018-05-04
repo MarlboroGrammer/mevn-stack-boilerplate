@@ -28,7 +28,7 @@
         </li>
       </ul>
     </div>
-    <div class="col-md-4" v-if='govSelected == true && isSelected == false'>
+    <div class="col-md-4" v-if='govSelected == true && isSelected == false && visits.length > 0'>
       <h2>Select a degelate to see his performance</h2>
       <p>Click on the eye next to delegate</p>
     </div>
@@ -89,6 +89,17 @@ function getCount (array, crit) {
   let tmp = array
   return tmp.filter(t => t.status === crit).length
 }
+
+function uniqueDelegate (delegatesArray, delegate) {
+  delegatesArray.forEach(d => {
+    if (d._id === delegate._id) {
+      console.log('Found')
+      return 0
+    }
+  })
+  return -1
+}
+
 export default{
     components: {
       VueHighcharts
@@ -126,8 +137,7 @@ export default{
     methods: {
       getDelegateVisits (id) {
         this.isSelected = true
-        this.delegateVisits = this.visits.filter(v => v.delegate === id)
-        console.log(this.delegateVisits)
+        this.delegateVisits = this.visits.filter(v => v.delegate._id === id)
       },
       setGovName (govName) {
         this.govSelected = true
@@ -135,7 +145,7 @@ export default{
         this.govName = govName
         this.visits = this.visitsCopy
         this.visits = this.visits.filter(v => getGovFromBoi(v.Adresse) === this.govName)
-
+        this.delegates = []
         if (this.visits.length > 0) { 
           let asyncPiechartData = {
             name: 'Visits',
@@ -153,11 +163,12 @@ export default{
             pieChart.hideLoading()
           }, 1000)
           this.visits.forEach(v => {
-            this.delegates = []
-            getDelegate(v.delegate).then(d => {
-              this.delegates.push(d)
-            })
+            console.log(this.delegates.indexOf(v))
+            if(uniqueDelegate(this.delegates, v.delegate) == -1){
+              this.delegates.push(v.delegate)
+            }
           })
+          console.log(this.delegates)
         }
       },
       drawTunisiaMap () {

@@ -15,28 +15,15 @@ router.post('/admin/add', function (req, res) {
 })
 
 router.get('/admin/data', function (req, res) {
-  EvenT.find({}, function (err, result) {
-    if (err) {
-      res.send(err)
-    }
-    if (!result) {
-      res.status(404).send()
-    } else {
-      res.json(result)
-    }
-  })
-})
-
-router.get('/admin/datadelegates', function (req, res) {
   console.log('API boi')
-  Event.find({}).populate('delegate').exec(function (err, reports) {
+  EvenT.find({}).populate('delegate').exec(function (err, visits) {
     if (err) {
       res.send(err)
     }
-    if (!result) {
+    if (!visits) {
       res.status(404).send()
     } else {
-      res.json(result)
+      res.json(visits)
     }
   })
 })
@@ -57,6 +44,16 @@ router.put('/admin/data/:id', function (req, res) {
   })
 })
 
+router.put('/admin/done/:id', function (req, res) {
+  EvenT.findOneAndUpdate({'_id': req.params.id}, {'status': 'Done'}, {upsert: true}, function (err, doc) {
+    if (err) {
+      res.send(err)
+    } else {
+      res.send('Approved')
+    }
+  })
+})
+
 router.delete('/admin/data/:id', function (req, res) {
   var id = req.params.id
   console.log(id)
@@ -65,6 +62,17 @@ router.delete('/admin/data/:id', function (req, res) {
       res.send(err)
     }
     res.json({message: 'DELETE DONE'})
+  })
+})
+
+router.get('/admin/data/:id', function (req, res) {
+  var id = req.params.id
+  console.log(id)
+  EvenT.findOne({'_id': id}, function (err, result) {
+    if (err) {
+      res.send(err)
+    }
+    res.json(result)
   })
 })
 

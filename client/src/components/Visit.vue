@@ -2,6 +2,21 @@
 <template>
   <div class="container" style="background-color:white">
     <h1>Visit Form</h1>
+      <div class="form-group">
+        <label> Type </label>
+        <select class="form-control" v-model="visitType">
+        <option disabled value="">Choisissez</option>
+        <option>Pharmacist</option>
+        <option>Doctor</option>
+        <option>Wholesaler</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Nom de client</label>
+      <input type="text" name="pharmacist" v-if="visitType === 'Pharmacist'" class="form-control" v-model="clientName">
+      <input type="text" name="doctor" v-if="visitType === 'Doctor'" class="form-control" v-model="clientName">
+      <input type="text" name="wholesaler" v-if="visitType === 'Wholesaler'" class="form-control" v-model="clientName">
+    </div>
     <div class="form-group">
     <label> Description </label>
       <textarea v-model="text" class="form-control" placeholder="Write here"></textarea>
@@ -17,15 +32,7 @@
         >
         </vue-google-autocomplete>
      </div>
-    <div class="form-group">
-      <label> Type </label>
-      <select class="form-control" v-model="visitType">
-      <option disabled value="">Choisissez</option>
-      <option>Pharmacist</option>
-      <option>Doctor</option>
-      <option>Wholesaler</option>
-      </select>
-    </div>
+
 
      <div class="form-group">
      <label> Start Date </label>
@@ -74,10 +81,13 @@ export default {
       start_date: null,
       end_date: null,
       visits: [],
+      clientName: '',
       visitType: '',
       address: '',
       chosenDelegate: null,
-      delegates: []
+      delegates: [],
+      lat: 0,
+      lng: 0
     }
   },
     mounted() {
@@ -101,7 +111,10 @@ export default {
         end_date: this.end_date,
         visitType: this.visitType,
         Adresse: this.address,
-        delegate: this.chosenDelegate
+        delegate: this.chosenDelegate,
+        clientName: this.clientName,
+        lat: this.lat,
+        lng: this.lng
       })
       this.$notify({
        group: 'foo',
@@ -173,8 +186,10 @@ export default {
 
     },
     getAddressData: function (addressData, placeResultData, id) {
-                this.address = placeResultData.formatted_address
-                console.log(this.address)},
+      this.address = placeResultData.formatted_address
+      this.lat = addressData.latitude
+      this.lng = addressData.longitude
+    },
   }
 }
 </script>

@@ -123,7 +123,8 @@ router.post('/add', function (req, res, next) {
 
       let ActionsObj = new Actions({
         date: new Date(),
-        amount: ReportObj.order.TotalEL
+        amount: ReportObj.order.TotalEL,
+        delegate: ReportObj.delegate
       })
       SalesObj.save(function (err, res) {
         if (err) {

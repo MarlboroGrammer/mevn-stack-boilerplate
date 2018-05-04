@@ -241,7 +241,7 @@ export default{
               lineCharts.addSeries(asyncWholesalersData)
               lineCharts.addSeries(asyncPharmacyData)
               lineCharts.hideLoading()
-          }, 2000)
+          }, 500)
           // Pie chart data
           let asyncPiechartData = {
               name: 'Amount',
@@ -256,7 +256,7 @@ export default{
           setTimeout(() => {
               pieChart.addSeries(asyncPiechartData)
               pieChart.hideLoading()
-          }, 2000)
+          }, 500)
           // Top sale drilldown chart
           let productsDrillDownData = []
 
@@ -278,7 +278,7 @@ export default{
           setTimeout(() => {
               drilldownChart.addSeries(asyncDrillDownData)
               drilldownChart.hideLoading()
-          }, 2000)
+          }, 500)
 
         })
       } 

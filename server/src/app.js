@@ -10,6 +10,8 @@ const reports = require('./reports')
 const delegates = require('./delegates.js')
 const sales = require('./sales.js')
 const actions = require('./actions.js')
+const clients = require('./client.js')
+const presentation = require('./presentation.js')
 
 const app = express()
 const config = require('./config/parameters')
@@ -24,6 +26,9 @@ app.use('/products', product)
 app.use('/visits', visit)
 app.use('/sales', sales)
 app.use('/actions', actions)
+app.use('/clients', clients)
+app.use('/presentation', presentation)
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   var err = new Error('Not Found')

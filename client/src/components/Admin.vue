@@ -135,18 +135,24 @@ import StackedChart from '@/components/adminCharts/StackedChart'
 import CoverageChart from '@/components/adminCharts/CoverageChart'
 import VisitAdmin from '@/components/VisitsAdmin'
 import Products from '@/components/Products'
+import presentation from '@/components/Presentation'
+import Slider from '@/components/Slider'
 
 export default {
   name: 'Admin',
   components: {
     'list': AdminList,
     'visit-admin': VisitAdmin,
-    'Products': Products
+    'Products': Products,
+    'Slider': Slider,
+    'presentation': presentation,
   },
   data () {
     return {
       currentComponent: AdminList,
       reportToApproveID: '',
+      currentComponent2: presentation,
+      presentationToApproveID: '',
       currentChart: StackedChart
     }
   },
@@ -159,8 +165,12 @@ export default {
     singleReport () {
       this.currentComponent = AdminReport
     },
+    singlePresentation () {
+      this.currentComponent2 = Slider
+    },
     back () {
       this.currentComponent = AdminList
+      this.currentComponent2 = presentation
     },
     loadChart (selectedChart) {
       switch (selectedChart) {
@@ -196,6 +206,9 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  html{
+    background: linear-gradient(180deg, white 50%, white 50%);
+  }
   .charts-links{
     text-decoration: none;
     list-style: none;

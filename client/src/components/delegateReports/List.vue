@@ -35,6 +35,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import ReportsService from '@/services/ReportsService'
 
 export default {
@@ -56,9 +57,11 @@ export default {
     }
   },
   mounted: function () {
+    
     this.getReports().then(reps => {
       reps = reps.filter(x => x.delegate._id === this.$store.getters.getDelegate)
       this.reports = reps
+      console.log(this.reports)
     })
   }
 }

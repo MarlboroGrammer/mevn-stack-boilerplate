@@ -1,8 +1,10 @@
 <!-- eslint-disable -->
 <template>
   <div>
+
     <h3>New report form</h3>
     <v-dialog/>
+    
     <div class="form-group">
       <select name="report-type" v-model="category" class="form-control">
         <option value="" disabled>Please select category</option>
@@ -16,8 +18,8 @@
     <div v-if="category === 'Pharmacy'">
       <form name="pharmacy-form" id="pharmacy-form" method="POST">
         <div class="form-group">
-          <label for="pharmacy-name">Pharmacy name</label>
-          <input type="text" name="pharmacyName" class="form-control" v-model="pharmacyName" required>
+          <label for="pharmacy-name">Pharmacist name</label>
+          <input type="text" name="pharmacyName" class="form-control" v-model="clientName" required readonly>
         </div>
         <div class="form-group">
           <label for="visit-objectif">Objectif de la visite</label>
@@ -89,7 +91,7 @@
       <form name="wholesaler-form" id="wholesaler-form" method="POST">
         <div class="form-group">
           <label for="pharmacy-name">Wholesaler name</label>
-          <input type="text" name="wholesalerName" class="form-control" v-model="pharmacyName">
+          <input type="text" name="wholesalerName" class="form-control" v-model="clientName" readonly>
         </div>
         <div class="form-group">
           <label for="visit-objectif">Objectif de la visite</label>
@@ -335,7 +337,7 @@
       <form name="doctor-form" id="doctor-form" method="POST">
         <div class="form-group">
           <label for="doctorName">Doctor name</label>
-          <input type="text" name="doctorName" class="form-control">
+          <input type="text" name="doctorName" class="form-control" v-model="clientName"  readonly>
         </div>
         <div class="form-group">
           <label for="visitObjectif">Visit objectif</label>
@@ -389,6 +391,7 @@ import DelegatesService from '@/services/DelegatesService'
 import ProductsService from '@/services/ProductsService'
 import ProductServlet from './ProductServlet'
 import SamplesServlet from './SamplesServlet'
+import VisitService from '@/services/VisitService'
 
 const form2js = require('form2js')
 
@@ -402,12 +405,16 @@ export default {
     return {
       category: '',
       pharmacyName: '',
+      clientName: '',
       visitObjectif: '',
       pharmacyPotential: '',
       productsList: [],
       orderCount: 0,
       orderIsPack: '',
-      sampleCount: 0
+      sampleCount: 0,
+      lat: 0,
+      lon: 0,
+      currentVisist: {}
     }
   },
   methods: {
@@ -417,7 +424,7 @@ export default {
         text: 'Report successfully sent',
         buttons: [
           {
-            title: 'Close', handler: () => { this.$parent.loadListComponent() }
+            title: 'Close', handler: () => { this.$parent.cancelAddForMap() }
           }
        ]
       })
@@ -453,6 +460,7 @@ export default {
       console.log(pharmacyObject)
       try {
         const response = await ReportsService.addReport(pharmacyObject)
+        const visitResponse = await VisitService.doVisit(this.$parent.currentVisitId)
         console.log(response)
         this.showSuccessModel()
       } catch (err) {
@@ -478,6 +486,7 @@ export default {
       console.log(wholeSalerObject)
       try {
         const response = await ReportsService.addReport(wholeSalerObject)
+        const visitResponse = await VisitService.doVisit(this.$parent.currentVisitId)
         console.log(response)
         this.showSuccessModel()
       } catch (err) {
@@ -541,6 +550,7 @@ export default {
       console.log(doctorObject)
       try {
         const response = await ReportsService.addReport(doctorObject)
+        const visitResponse = await VisitService.doVisit(this.$parent.currentVisitId)
         console.log(response)
         this.showSuccessModel()
       } catch (err) {
@@ -562,6 +572,7 @@ export default {
                 </div>
               </div>
               <br>`)
+      console.log(this.lon, this.lat)
     },
     randomIntFromInterval (min,max) {
       return Math.floor(Math.random()*(max-min+1)+min);
@@ -576,7 +587,57 @@ export default {
     }
   },
   mounted: function () {
+    console.log('Im up!')
     ProductsService.getProducts().then(res => this.productsList = res.data)
+    /*var map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: -34.397, lng: 150.644},
+      zoom: 6
+    })*/
+    VisitService.getVisitById(this.$parent.currentVisitId).then(res => {
+      this.currentVisit = res.data
+      switch (res.data.visitType) {
+        case 'Pharmacist':
+          this.category = 'Pharmacy'
+          this.clientName = res.data.clientName
+          break
+        case 'Doctor':
+          this.category = 'Doctor'
+          this.clientName = res.data.clientName
+          break
+        case 'Wholesaler':
+          this.category = 'Wholesaler'
+          this.clientName = res.data.clientName
+          break
+      }
+    })/*
+    var infoWindow = new google.maps.InfoWindow({map: map})
+
+    // Try HTML5 geolocation.
+    let self = this
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+          var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          }
+          self.lat = pos.lat
+          self.lon = pos.lng
+          infoWindow.setPosition(pos);
+          infoWindow.setContent('Location found.')
+          map.setCenter(pos)
+        }, function() {
+          handleLocationError(true, infoWindow, map.getCenter())
+        });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter())
+    }
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      infoWindow.setPosition(pos);
+      infoWindow.setContent(browserHasGeolocation ? 'Error: The Geolocation service failed.' : 
+        'Error: Your browser doesn\'t support geolocation.');
+    }*/
   }
 }
 </script>

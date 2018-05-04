@@ -52,6 +52,9 @@
           <a data-toggle="tab" href="#calendar">Calendar</a>
         </li>
         <li>
+          <a data-toggle="tab" href="#map">Map</a>
+        </li>
+        <li>
           <a data-toggle="tab" href="#inbox">Presentations</a>
         </li>
         <li>
@@ -67,9 +70,7 @@
           <h2>Reports Management</h2>
           <div class="row">
             <div class="col-md-12">
-              <button class="btn btn-danger" @click="loadAddComponent()" v-if="!isAdd">Add a report</button>
               <div :is="currentComponent"></div>
-              <button class="btn btn-primary" @click="loadListComponent()" v-if="isAdd">Cancel</button>
             </div>
           </div>
         </div>
@@ -77,26 +78,14 @@
         <div id="calendar" class="tab-pane fade">
           <Calendar></Calendar>
         </div>
+        <div id="map" class="tab-pane fade">
+          <DelegateMap></DelegateMap>
+        </div>
         <div id="inbox" class="tab-pane fade">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="presentation-title">Presentation Title</label>
-                <input type="text" name="presentation-title" class="form-control">
-              </div>
-              <div class="form-group">
-                <button class="btn btn-pharma" id="addslide">Add a slide</button>
-                <button class="btn btn-primary" id="save-btn">Save</button>
-              </div>
-            </div>
-          </div>
-          <div class="row" id="slides" style="overflow-y: scroll; max-height: 500px;">
-
-          </div>
+          <div :is="currentComponent2"></div>
         </div>
 
         <div id="overview" class="tab-pane fade">
-          
         </div>
       </div>
     </div>
@@ -107,20 +96,28 @@
 /* eslint-disable no-return-assign */
 import ListReports from '@/components/delegateReports/List'
 import FormReports from '@/components/delegateReports/Form'
+import DelegateMap from '@/components/DelegateMap'
 import Calendar from '@/components/Calendar'
+import Presentation from '@/components/Presentation'
+import map from '@/components/map'
 
 export default {
   name: 'Delegate',
   components: {
     'list': ListReports,
-    'form': FormReports,
-    'Calendar': Calendar
+    'Calendar': Calendar,
+    'DelegateMap': DelegateMap,
+    'Presentation': Presentation,
+    'Map': map
   },
   data () {
     return {
       isAdd: false,
       reports: [],
-      currentComponent: ListReports
+      currentComponent: ListReports,
+      mapReportComponent: map,
+      currentComponent2: Presentation,
+      currentVisitId: '5ae88ea168c5bae702532662'
     }
   },
   methods: {
@@ -129,12 +126,23 @@ export default {
       this.$store.dispatch('logout')
       this.$router.push({name: 'Login'})
     },
+    back () {
+      this.currentComponent2 = Presentation
+    },
     loadAddComponent () {
       this.currentComponent = FormReports
       this.isAdd = true
     },
     loadListComponent () {
       this.currentComponent = ListReports
+      this.isAdd = false
+    },
+    loadAddForMap () {
+      this.mapReportComponent = FormReports
+      this.isAdd = true
+    },
+    cancelAddForMap () {
+      this.mapReportComponent = map
       this.isAdd = false
     }
   },
@@ -154,7 +162,7 @@ export default {
     line-height: 1.42857143;
     border: 1px solid transparent;
     border-radius: 4px 4px 0 0;
-    padding-left: 110px;
-    padding-right: 114px;
+    padding-left: 90px;
+    padding-right: 94px;
   }
 </style>
