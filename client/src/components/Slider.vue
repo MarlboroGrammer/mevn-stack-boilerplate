@@ -14,6 +14,16 @@
      <swiper-slide v-if="presentation.name === 'Maxilase'"><div class="text-center"><img src="..\..\..\server\src\uploads\Drill.jpg"><br><h4>{{presentation.text3}}</h4></div></swiper-slide>
     <swiper-slide v-if="presentation.name === 'Maxilase'"><div class="text-center"><img src="..\..\..\server\src\uploads\Maxilase.jpg" ><br><h4>{{presentation.text4}}</h4></div></swiper-slide>
 
+<swiper-slide v-if="presentation.name === 'test'"><div class="text-center"><img src="..\..\..\server\src\uploads\Fortimel.jpg"><br><h4>{{presentation.text1}}</h4></div></swiper-slide>
+    <swiper-slide v-if="presentation.name === 'test'"><div class="text-center"><img src="..\..\..\server\src\uploads\Donormyl.jpg"  ><br><h4>{{presentation.slide2}}{{presentation.text2}}</h4></div></swiper-slide>
+     <swiper-slide v-if="presentation.name === 'test'"><div class="text-center"><img src="..\..\..\server\src\uploads\Drill.jpg"><br><h4>{{presentation.text3}}</h4></div></swiper-slide>
+    <swiper-slide v-if="presentation.name === 'test'"><div class="text-center"><img src="..\..\..\server\src\uploads\Maxilase.jpg" ><br><h4>{{presentation.text4}}</h4></div></swiper-slide>
+
+<swiper-slide v-if="presentation.name === 'Test'"><div class="text-center"><img src="..\..\..\server\src\uploads\Fortimel.jpg"><br><h4>{{presentation.text1}}</h4></div></swiper-slide>
+    <swiper-slide v-if="presentation.name === 'Test'"><div class="text-center"><img src="..\..\..\server\src\uploads\renutryl.jpg"  ><br><h4>{{presentation.slide2}}{{presentation.text2}}</h4></div></swiper-slide>
+     <swiper-slide v-if="presentation.name === 'Test'"><div class="text-center"><img src="..\..\..\server\src\uploads\Drill.jpg"><br><h4>{{presentation.text3}}</h4></div></swiper-slide>
+    <swiper-slide v-if="presentation.name === 'Test'"><div class="text-center"><img src="..\..\..\server\src\uploads\Maxilase.jpg" ><br><h4>{{presentation.text4}}</h4></div></swiper-slide>
+
     <swiper-slide v-if="presentation.name === 'Pommade'"><div class="text-center"><img src="..\..\..\server\src\uploads\Maxilase.jpg"><br><h4>{{presentation.text1}}</h4></div></swiper-slide>
     <swiper-slide v-if="presentation.name === 'Pommade'"><div class="text-center"><img src="..\..\..\server\src\uploads\Drill.jpg"  ><br><h4>{{presentation.slide2}}{{presentation.text2}}</h4></div></swiper-slide>
      <swiper-slide v-if="presentation.name === 'Pommade'"><div class="text-center"><img src="..\..\..\server\src\uploads\Fortimel.jpg"><br><h4>{{presentation.text3}}</h4></div></swiper-slide>
